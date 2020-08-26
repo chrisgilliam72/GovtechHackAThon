@@ -1,0 +1,84 @@
+﻿
+@inject GovtechHackAthon.Services.DBLookupService DBLookupService
+
+<div class="card shadow" style="height:100%">
+    <div class="card-header cardbanner50px">
+        <i class="fa fa-align-justify"></i> Case Information
+    </div>
+    <div class="card-body">
+        <div class="container-fluid">
+
+            <br />
+            <div class="row">
+                @{
+                    //Dictionary<String, bool> outComeSelections = new Dictionary<String, bool>();
+
+                    var situationOptions =  DBLookupService.GetSituationOptions().OrderBy(x => x.DisplayOrder).ToList();
+                    var situationStatements = DBLookupService.GetSituationStatements().OrderBy(x => x.DisplayOrder).ToList();
+                    var outcomes = DBLookupService.GetOutcomes();
+
+                    <div class="col-12">
+                        <div class="card-deck">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 style="font-weight:bold"> Which of these statements describe your situation the best ?</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div>
+
+                                        @{
+                                            foreach (var situation in situationStatements)
+                                            {
+                                                <div class="checkbox">
+                                                    @situation.DisplayString
+                                                </div>
+                                            }
+                                        }
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 style="font-weight:bold"> Which of these options describe your situation the best ?</h6>
+                                </div>
+                                <div class="card-body">
+
+                                    @{
+                                        foreach (var situation in situationOptions)
+                                        {
+                                            <div class="checkbox">
+                                                @situation.DisplayString
+                                            </div>
+                                        }
+                                    }
+
+                                </div>
+
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 style="font-weight:bold"> Choose outcomes from the below sections to align to your Case/Problem Statement?</h6>
+                                </div>
+                                <div class="card-body">
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                }
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+@code {
+
+}

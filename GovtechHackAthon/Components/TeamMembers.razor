@@ -1,0 +1,101 @@
+﻿@inject GovtechHackAthon.Services.DBAPI dbAPI
+@using Models
+<h3>TeamMembers</h3>
+
+<div id="tblMembers">
+
+    <table class="table table-sm table-striped table-hover ">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>E-Mail</th>
+                <th>ID</th>
+                <th>Gender</th>
+                <th>Race</th>
+                <th>Country</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="">
+            @{
+                int dlgIndex = 0;
+                var membersList = dbAPI.GetTeamMembers();
+            }
+
+            @foreach (var teamMember in membersList)
+            {
+                string dialogID = "teamMemberModalEdit" + dlgIndex;
+                var modelDeleteID = "modalDelete" + dlgIndex;
+                var modelUpdateID = "modelUpdate" + dlgIndex;
+                <tr>
+                    <td>
+                    @teamMember.FullName
+                    </td>
+                    <td>
+                      @teamMember.Email
+                    </td>
+                    <td>
+                       @teamMember.ID
+                    </td>
+                    <td>
+                       @teamMember.Race
+                    </td>
+                    <td>
+                      @teamMember.Gender
+                    </td>
+                    <td>
+                       @teamMember.Country
+                    </td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-bars icon-color"></i>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                <button @onclick="(e=>EditTeamMember(teamMember.TeamMemberID))" class=" far fa-edit dropdown-item btnSubmit" type="button" data-toggle="modal" data-target="#@modelUpdateID"> Edit</button>
+                                @if (membersList.Count() > 3)
+                                {
+                                    <button class="far fa-trash-alt dropdown-item btnSubmit" type="button" data-toggle="modal" data-target="#@modelDeleteID"> Delete</button>
+                                }
+                                else
+                                {
+                                    <button class="far fa-trash-alt dropdown-item btnSubmit" type="button" disabled> Delete</button>
+                                }
+
+                            </div>
+                        </div>
+
+
+
+                    </td>
+                </tr>
+                dlgIndex++;
+            }
+        </tbody>
+    </table>
+
+    <div class="float-right">
+        @if (membersList.Count() < 5)
+        {
+            <button type="button" class="btn  button-next btn-sm btnSubmit float-right" data-toggle="modal" data-target="#teamMemmberModal">Add team member</button>
+        }
+        elses
+        {
+        <button type="button" class="btn  button-next btn-sm btnSubmit float-right" disabled>Add team member</button>
+        }
+
+
+        @*<button  type="button" class="btn  button-next btn-sm btnSubmit float-right">Add team member</button>*@
+    </div>
+</div>
+
+
+@code {
+
+
+    int selectedTeamMemberID;
+    void EditTeamMember(int memberID)
+    {
+        selectedTeamMemberID = memberID;
+    }
+}
