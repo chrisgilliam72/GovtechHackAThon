@@ -1,0 +1,1 @@
+﻿Scaffold-DbContext 'Data Source=(local);Database=GovtechHackathon;Trusted_Connection=True;' Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force

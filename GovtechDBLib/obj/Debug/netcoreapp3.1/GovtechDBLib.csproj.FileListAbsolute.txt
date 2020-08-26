@@ -1,0 +1,12 @@
+C:\Users\chris\Source\Workspaces\Web Application\GovtechDBLib\bin\Debug\netcoreapp3.1\GovtechDBLib.deps.json
+C:\Users\chris\Source\Workspaces\Web Application\GovtechDBLib\bin\Debug\netcoreapp3.1\GovtechDBLib.runtimeconfig.json
+C:\Users\chris\Source\Workspaces\Web Application\GovtechDBLib\bin\Debug\netcoreapp3.1\GovtechDBLib.runtimeconfig.dev.json
+C:\Users\chris\Source\Workspaces\Web Application\GovtechDBLib\bin\Debug\netcoreapp3.1\GovtechDBLib.dll
+C:\Users\chris\Source\Workspaces\Web Application\GovtechDBLib\bin\Debug\netcoreapp3.1\GovtechDBLib.pdb
+C:\Users\chris\Source\Workspaces\Web Application\GovtechDBLib\obj\Debug\netcoreapp3.1\GovtechDBLib.AssemblyInfoInputs.cache
+C:\Users\chris\Source\Workspaces\Web Application\GovtechDBLib\obj\Debug\netcoreapp3.1\GovtechDBLib.AssemblyInfo.cs
+C:\Users\chris\Source\Workspaces\Web Application\GovtechDBLib\obj\Debug\netcoreapp3.1\GovtechDBLib.csproj.CoreCompileInputs.cache
+C:\Users\chris\Source\Workspaces\Web Application\GovtechDBLib\obj\Debug\netcoreapp3.1\GovtechDBLib.dll
+C:\Users\chris\Source\Workspaces\Web Application\GovtechDBLib\obj\Debug\netcoreapp3.1\GovtechDBLib.pdb
+C:\Users\chris\Source\Workspaces\Web Application\GovtechDBLib\obj\Debug\netcoreapp3.1\GovtechDBLib.genruntimeconfig.cache
+C:\Users\chris\Source\Workspaces\Web Application\GovtechDBLib\obj\Debug\netcoreapp3.1\GovtechDBLib.csprojAssemblyReference.cache
