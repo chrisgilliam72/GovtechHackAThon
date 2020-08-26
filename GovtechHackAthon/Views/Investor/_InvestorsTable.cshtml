@@ -1,0 +1,162 @@
+﻿
+@model InvestorsTable
+
+    <div id="divInvestorTableParial" class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Active</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>City</th>
+                    <th>Province</th>
+                    <th>Company</th>
+                    <th>Industry</th>
+                    <th><div class="text-center">Approved</div></th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ int index = 0;}
+                @foreach (var investor in Model.InvestorList)
+                {
+                    string modalApproveID = "modalApproveID" + index;
+                    var frmActivateID = "frmActivateUsr" + index;
+                    var frmDeActivateUsrID = "frmDeActivateUsr" + index;
+                    string modalActivateID = "modalActivateID" + index;
+                    string modalDeactivateID = "modalDeactivateID" + index;
+                    string frmApproveID = "frmApproveIDID" + index;
+                    string btnApprovID = "btnApprovID" + index;
+                    var actBtnID = "btnActUser" + index;
+                    var delBtnID = "btnDelUser" + index;
+                    <tr>
+                        <td>@Html.CheckBoxFor(x=>investor.IsActive)</td>
+                        <td>@investor.FullName</td>
+                        <td>@investor.Phone</td>
+                        <td>@investor.Email</td>
+                        <td>@investor.City</td>
+                        <td>@investor.Province</td>
+                        <td>@investor.Company</td>
+                        <td>@investor.Industry</td>
+                        <td>
+                            @if (investor.IsApproved)
+                            {<div class="text-center">
+                                    <i class="fas fa-check fa-lg"></i>
+                                </div>
+                            }
+                        </td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-bars"></i>
+                                </button>
+                                @if (!investor.IsApproved)
+                                {
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                        <button class="dropdown-item btnSubmit" type="button" data-toggle="modal" data-target="#@modalApproveID"><i class="fa fa-edit"></i>Approve</button>
+                                    </div>
+                                }
+                                else
+                                {
+                                    if (investor.IsActive)
+                                    {
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                            <button class="dropdown-item btnSubmit" type="button" data-toggle="modal" data-target="#@modalDeactivateID"><i class="fa fa-edit"></i>Deactivate</button>
+                                        </div>
+                                    }
+                                    
+                                    else
+                                    {
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                            <button class="dropdown-item btnSubmit" type="button" data-toggle="modal" data-target="#@modalActivateID"><i class="fa fa-edit"></i>Activate</button>
+                                        </div>
+                                    }
+
+                                }
+                            </div>
+
+                            <form id="@frmApproveID" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#divInvestorTableParial" asp-action="ApproveInvestor" asp-controller="Investor" role="form" data-ajax-method="post">
+                                @Html.HiddenFor(x => investor.ID)
+                                @Html.HiddenFor(x => Model.InvestorList[index ].ID)
+                                @*@Html.HiddenFor(x => Model.Users[dlgIndex - 1].UserID)*@
+                                <div class="modal fade" id="@modalApproveID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header text-color">
+                                                <h6 class="modal-title" id="exampleModalLongTitle"><i class="fa fa-check-circle" aria-hidden="true">&nbsp;</i>Confirm approval of @{@investor.FullName}</h6>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to approve this investor ?
+                                            </div>
+                                            <div class="modal-footer bg-modal-footer">
+                                                <button type="button" class="btn-default btn-sm  button-cancel" data-dismiss="modal">CANCEL</button>
+                                                <button id="@btnApprovID" type="submit" class="btn button-next  btn-sm btnSubmit float-right">Approve</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <form id="@frmDeActivateUsrID" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#divInvestorTableParial" asp-action="DeActivateInvestor" asp-controller="Investor" role="form" data-ajax-method="post">
+                                @Html.HiddenFor(x => investor.ID)
+                                <div class="modal fade" id="@modalDeactivateID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header text-color">
+                                                <h6 class="modal-title" id="exampleModalLongTitle"><i class="fa fa-ban" aria-hidden="true">&nbsp;</i>Confirm deactivation of @{@investor.FullName}</h6>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to deactivate this user ?
+                                            </div>
+                                            <div class="modal-footer bg-modal-footer">
+                                                <button type="button" class="btn-default btn-sm  button-cancel" data-dismiss="modal">CANCEL</button>
+                                                <button id="@delBtnID" type="submit" class="btn button-next  btn-sm btnSubmit float-right">DEACTIVATE</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <form id="@frmActivateID" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#divInvestorTableParial" asp-action="ActivateInvestor" asp-controller="Investor" role="form" data-ajax-method="post">
+                                @Html.HiddenFor(x => investor.ID)
+
+                                <div class="modal fade" id="@modalActivateID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header text-color">
+                                                <h6 class="modal-title" id="exampleModalLongTitle"><i class="fa fa-check-circle" aria-hidden="true">&nbsp;</i>Confirm activation of @{@investor.FullName}</h6>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to activate this user ?
+                                            </div>
+                                            <div class="modal-footer bg-modal-footer">
+                                                <button type="button" class="btn-default btn-sm  button-cancel" data-dismiss="modal">CANCEL</button>
+                                                <button id="@actBtnID" type="submit" class="btn button-next  btn-sm btnSubmit float-right">Activate</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                    </tr>
+                    index++;
+
+                }
+            </tbody>
+        </table>
+        @if (Model.UpdateSuccessful)
+        {
+            <div>
+                @await Html.PartialAsync("/Views/Shared/_ShowToast.cshtml", new ToastMessage("Success", "Investor status updated"))
+            </div>
+        }
+    </div>

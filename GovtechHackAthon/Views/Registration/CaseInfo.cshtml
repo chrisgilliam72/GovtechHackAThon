@@ -1,0 +1,98 @@
+﻿@model GovtechHackAthon.Models.Case
+@inject GovtechHackAthon.Services.DBLookupService DBLookupService
+@{
+    ViewData["Title"] = "CaseInfo";
+}
+
+@using (Html.BeginForm("CaseDetailsSubmitted", "Registration", FormMethod.Post))
+{
+    <br />
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card shadow">
+                <div class="card-body">
+                    <img src="~/images/sidelogo.png" class="img-fluid" /><br />
+                    <text class="font-weight-bold" style="color:orangered">
+                        Describe your Proposal!<br />
+                    </text>
+                    <br />
+                    <p>
+                        The purpose is for you to learn enough about GovtechHackathon so that you can start, or further develop, your own business idea.
+                        In addition, we will give you some tools that will increase the likelihood of success - and hopefully give you inspiration to get started.
+                    </p>
+                </div>
+                </div>
+        </div>
+        <div class="col-md-9">
+            <div class="card shadow" style="height:100%">
+                <div class="card-header-case shadow-sm cardbanner50px"  style="background-color:mintcream">
+                    <i class="fa fa-info-circle fa-lg case-style"></i>
+                    <text class="case-style">Proposal Information</text>
+                </div>
+                <div class="card-body">                
+                    @await Html.PartialAsync("/Views/Shared/_CaseInfoDetails.cshtml", Model)
+                </div>
+
+
+                <div class="card-footer cardbanner60px">
+                    <div class="float-right">
+                        <label>Step 03 Of 06 </label>
+                        <input type="submit" value="Next" class="btn button-next" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[name='SituationStatementID']").change(function () {
+                if ($("#chkbxCompany").is(":checked") ||
+                    $("#chkbxPartCompany").is(":checked") ||
+                    $("#chkboxSMME").is(":checked")) {
+                    $("#divCompanyInfo").removeClass("d-none")
+                    $("#divCompanyInfo").addClass("d-block")
+                } else {
+                    $("#divCompanyInfo").addClass("d-none")
+                    $("#divCompanyInfo").removeClass("d-block")
+                }
+
+                if ($("#chkboxStudent").is(":checked")) {
+                    // alert("student!")
+                    $("#divStudentInfo").removeClass("d-none")
+                    $("#divStudentInfo").addClass("d-block")
+                }
+                else {
+                    $("#divStudentInfo").addClass("d-none")
+                    $("#divStudentInfo").removeClass("d-block")
+                }
+
+            });
+
+            $(".collapsible").on('click', function (e) {
+                this.classList.toggle("active")
+                var content = this.nextElementSibling;
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        });
+    </script>
+
+
+
+}
+
+
+
+
+
+
+
+

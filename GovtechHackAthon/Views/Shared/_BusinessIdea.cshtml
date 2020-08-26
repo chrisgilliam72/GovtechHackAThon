@@ -1,0 +1,118 @@
+﻿@model GovtechHackAthon.Models.RegistrationBusinessIdea
+
+@Html.HiddenFor(x => x.IdeaID)
+@Html.HiddenFor(x => x.CaseID)
+@Html.HiddenFor(x => x.Who)
+@Html.HiddenFor(x => x.What)
+@Html.HiddenFor(x => x.How)
+@Html.HiddenFor(x => x.Impact)
+    <div id="divBusinessideaPartial">
+        <div id="sample">
+            <div class="card">
+                <div class="card-header-case" style="color:#F1345A">
+                    Your idea solves:
+                </div>
+
+               
+                    <div class="row">
+                        <div class="col">
+                            <div id="txtEditorWhat"> </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            @Html.ValidationMessageFor(x => x.What, "", new { @Class = "text-danger" })
+                        </div>
+                    </div>
+             
+            </div>
+            <br />
+            <div class="card">
+                <div class="card-header-case" style="color:#F1345A">
+
+                    Your idea will solve the problems by
+                </div>
+
+              
+                    <div class="row">
+                        <div class="col">
+                            <div id="txtEditorHow"> </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            @Html.ValidationMessageFor(x => x.How, "", new { @Class = "text-danger" })
+                        </div>
+                    </div>
+               
+                <br />
+                <div class="card">
+                    <div class="card-header-case" style="color:#F1345A">
+                        Your idea will help
+                    </div>
+
+                  
+                        <div class="row">
+                            <div class="col">
+                                <div id="txtEditorWho"> </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                @Html.ValidationMessageFor(x => x.Who, "", new { @Class = "text-danger" })
+                            </div>
+                        </div>
+                   
+                </div>
+                <br />
+                <div class="card">
+                    <div class="card-header-case" style="color:#F1345A">
+                        Impact of your idea
+                    </div>
+
+                   
+                        <div class="row">
+                            <div class="col">
+                                <div id="txtEditorImpact"> </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                @Html.ValidationMessageFor(x => x.Impact, "", new { @Class = "text-danger" })
+                            </div>
+                        </div>
+                 
+                </div>
+            </div>
+        </div>
+        @if (Model.ShowToast)
+        {
+            @await Html.PartialAsync("/Views/Shared/_ShowToast.cshtml", new ToastMessage("Success", "Business idea updated"))
+        }
+    </div>
+<script type="text/javascript">
+    $("#txtEditorWhat").Editor();
+    var editorTxt1 = "@System.Web.HttpUtility.JavaScriptStringEncode(Model.What)";
+    editorTxt1 = editorTxt1.replace(new RegExp("&quot;", "g"), "\"");
+    editorTxt1 = editorTxt1.replace(new RegExp("&fontquot;", "g"), "&quot;");
+    $("#txtEditorWhat").Editor("setText", editorTxt1);
+
+    $("#txtEditorHow").Editor();
+    editorTxt1 = "@System.Web.HttpUtility.JavaScriptStringEncode(Model.How)";
+    editorTxt1 = editorTxt1.replace(new RegExp("&quot;", "g"), "\"");
+    editorTxt1 = editorTxt1.replace(new RegExp("&fontquot;", "g"), "&quot;");
+    $("#txtEditorHow").Editor("setText", editorTxt1);
+
+    $("#txtEditorWho").Editor();
+    editorTxt1 = "@System.Web.HttpUtility.JavaScriptStringEncode(Model.Who)";
+    editorTxt1 = editorTxt1.replace(new RegExp("&quot;", "g"), "\"");
+    editorTxt1 = editorTxt1.replace(new RegExp("&fontquot;", "g"), "&quot;");
+    $("#txtEditorWho").Editor("setText", editorTxt1);
+
+    $("#txtEditorImpact").Editor();
+    editorTxt1 = "@System.Web.HttpUtility.JavaScriptStringEncode(Model.Impact)";
+    editorTxt1 = editorTxt1.replace(new RegExp("&quot;", "g"), "\"");
+    editorTxt1 = editorTxt1.replace(new RegExp("&fontquot;", "g"), "&quot;");
+    $("#txtEditorImpact").Editor("setText", editorTxt1);
+</script>

@@ -1,0 +1,72 @@
+﻿@model GovtechHackAthon.Models.UserLoginDetails
+@{
+    ViewData["Title"] = "Login";
+}
+<br />
+@using (Html.BeginForm("Login", "Registration", FormMethod.Post))
+{
+    <div class="card bg-transparent shadow" style="border:none;border-radius:15px"><br />
+        <div class="card-body ">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-3 bg-white  d-none d-md-block loginLogo" style="border-top-left-radius:15px; border-bottom-left-radius:15px">
+                    <br /><br /><br /><br />
+                    <img src="~/images/sidelogo.png" style="background-size:cover" class="img-fluid" /><br /><br /><br />
+                    <div class="text-center">
+                        <hr />
+                        <a asp-action="ForgotPassword" asp-controller="Registration" style="color:black; font-weight:bolder">Forgot Password?</a><hr />
+                        <p style="color:black; font-weight:bolder">
+                            Don't have an account?  <a asp-action="UserRegistrationData" asp-controller="Registration">Register here</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-5 shadow Login" style="border-top-right-radius:15px; border-bottom-right-radius:15px; background-color:#333B41">
+                    <h3 style="color:#868787; text-align:center; padding:30px">
+                        Sign In
+                    </h3>
+                    <div asp-validation-summary="ModelOnly" class="text-error"></div>
+                    <div class="input-group-sm">
+                        <label></label>
+                        <input asp-for="UserName" class="form-control-New-Login" type="email" placeholder="&#xf007;     Email Address" style="        font-family: Arial, FontAwesome" />
+                        <span asp-validation-for="UserName" class="text-error"></span>
+                    </div>
+                    <div class="input-group-sm">
+                        <label></label>
+                        <input asp-for="Password" class="form-control-New-Login" type="password" placeholder="&#xf023;     Password" style="font-family:Arial, FontAwesome" />
+                        <span asp-validation-for="Password" class="text-error"></span>
+                    </div><br />
+                    <div class="text-center">
+                        <button type="submit" class="button1"><span>Login</span></button>
+                    </div>
+                    <br />
+                    <div class="text-left">
+                        @Html.ValidationMessage("Error", new { @Class = "text-error" })
+                    </div>
+                    <div class="mobileShow">
+                        <a asp-action="ForgotPassword" asp-controller="Registration" style="color:white; font-weight:bolder">Forgot Password?</a><hr />
+                        <p style="color:white; font-weight:bolder">
+                            Don't have an account?  <a asp-action="UserRegistrationData" asp-controller="Registration">Register here</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12" style="text-align:center">
+
+                    <hr class="hr-line-big hr-line"/>
+                    <p style="font-size:14px">
+                        TURN YOUR <text class="text-success1"><strong>IDEAS</strong></text> INTO<br />
+                        TECHNOLOGY  <text class="text-success1"><strong>SOLUTIONS</strong></text>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

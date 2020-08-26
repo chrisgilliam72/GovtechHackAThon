@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "AllProposals";
+    Layout = "~/Views/Investor/_InvestorDashboardLayout.cshtml";
+}
+@model InvestorProposals
+    <br />
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header shadow-sm" style="background-color:mintcream">
+                <div>
+                    <i class="fas fa-file-alt fa-lg caselist-style"></i>
+                    <text class="caselist-style">
+                        @Model.Title
+                    </text>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-responsive-sm table-striped">
+                    <thead style="background-color:azure">
+                        <tr>
+                            <th>Proposal Name</th>
+                            <th>Proposal Category </th>
+                            <th>Date Submitted</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-bordered">
+                        @foreach (var proposal in Model.Proposals)
+                        {
+                            <tr>
+                                <td class="text-capitalize">@Html.ActionLink(proposal.Name, "CaseDetail", "Investor", new { CaseID = proposal.ID })</td>
+                                <td>@Html.DisplayFor(x => proposal.Category)</td>
+                                <td>@Html.DisplayFor(x => proposal.DaeSubmitted)</td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <!--No footer-->
+        </div>
+</div>
+

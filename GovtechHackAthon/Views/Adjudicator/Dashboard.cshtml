@@ -1,0 +1,164 @@
+﻿
+
+@inject GovtechHackAthon.Services.DBLookupService dbLookupService
+@model GovtechHackAthon.Models.AdjudicatorCaseList
+@{
+
+    ViewData["Title"] = "CaseList";
+}
+<br />
+
+<div class="row">
+    <div class="col-md-2">
+        <div class="card shadow">
+            <div class="card-body">
+                <div>
+                    <img src="~/images/sidelogo.png" class="img-fluid" /><br />
+                    <text style="color:orangered">
+                        <b>  My Proposals Dashboard!</b>
+                    </text>
+                </div>
+            </div>
+            <p>
+
+            </p>
+        </div>
+    </div>
+    <div class="col-md-10">
+        <div class="card shadow">
+            <div class="card-header shadow-sm" style="background-color:mintcream">
+                <div>
+                    <i class="fas fa-file-alt fa-lg caselist-style"></i>
+                    <text class="caselist-style">
+                        My Proposals
+                    </text>
+                </div>
+
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-responsive table-striped">
+                    <thead style="background-color:azure">
+                        <tr>
+                            <th>Proposal Name</th>
+                            <th>Proposal Date Submitted </th>
+                            <th>Proposal Status </th>
+                            <th>Assigned to</th>
+                            <th>Submitted</th>
+                            @{
+
+                                var scoringCategories = dbLookupService.GetScoringCategories();
+                                foreach (var category in scoringCategories)
+                                {
+
+
+                                    if (Model.TechnicalAdjudication && (category.FkType.Description == "Technical" || category.FkType.Description == "Proposal"))
+                                    {
+                                        <th>@(category.Description+ " ("+category.MaxScore+")")</th>
+                                    }
+                                    else if (!Model.TechnicalAdjudication && category.FkType.Description == "Proposal")
+                                    {
+                                        <th>@(category.Description+ " ("+category.MaxScore+")")</th>
+                                    }
+                                }
+                            }
+                            <th>Total</th>
+                            <th>Rank</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-bordered">
+                        @{
+                            int Rank = 1;
+                            int dlgIndex = 0;
+                            var orderedCases = Model.Cases.OrderByDescending(x => x.TotalRating).ToList();
+                        }
+                        @foreach (var caseItem in orderedCases)
+                        {
+                            var modelDeleteID = "modalDelete" + dlgIndex;
+                            var delBtnID = "btnDelTeamMember" + dlgIndex;
+
+                        <tr>
+                            <td class="text-capitalize">@Html.ActionLink(caseItem.CaseName, "CaseDetail", "Adjudicator", new { CaseID = caseItem.CaseID })</td>
+                            <td>@Html.DisplayFor(x => caseItem.DateSubmitted)</td>
+                            <td>@Html.DisplayFor(x => caseItem.Status)</td>
+                            <td>@Html.DisplayFor(x => caseItem.AssignedTo)</td>
+                            <td>@Html.DisplayFor(x => caseItem.Submitted)</td>
+                            @{var ratingScores = caseItem.RatingScores;}
+                            @if (ratingScores.Count > 0)
+                            {
+                                foreach (var category in scoringCategories)
+                                {
+                                    var ratingScore = ratingScores.FirstOrDefault(x => x.CategoryID == category.PkId);
+                                    if (ratingScore != null)
+                                    {
+                                        <td>@ratingScore.ActualScore</td>
+                                    }
+                                    else
+                                    {
+                                        if (Model.TechnicalAdjudication && category.FkType.Description == "Technical")
+                                        {
+                                            <td>N/A</td>
+                                        }
+
+                                    }
+
+                                }
+
+                                <td>@caseItem.TotalRating</td>
+                                <td>@Rank</td>
+                            }
+                            else
+                            {
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                if (Model.TechnicalAdjudication)
+                                {
+                                    <td>N/A</td>
+                                    <td>N/A</td>
+                                    <td>N/A</td>
+                                }
+                            }
+                        </tr>
+                            Rank = Rank + 1;
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+                <div class="float-left" ml-2>
+                    <form id="changePasswordForm" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#divChangePasswordPartial" asp-action="ChangePasswordPartial" asp-controller="Adjudicator" role="form" data-ajax-method="post">
+                        <div id="divChangePasswordPartial">
+                            @await Html.PartialAsync("/Views/Shared/_ChangePassword.cshtml", new ChangePassword())
+                        </div>
+                    </form>
+                </div>
+                <div class="input-group-sm float-right mr-2">
+                    <button id="btnChangePasswordDlg" type="button" class="btn btn btn-danger" data-toggle="modal" data-target="#chngePasswordModal">Change Password &nbsp;<i class="fas fa-lock"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+    <script type="text/javascript">
+        $(document).on('click', '#btnChangePassword', function (e) {
+            var form = $("#changePasswordForm");
+            if (form.valid()) {
+                //$('#chngePasswordModal').modal('hide');
+                //$('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+            }
+            //else {
+            //    alert("not valid");
+            //}
+        });
+    </script>
+}
+
+

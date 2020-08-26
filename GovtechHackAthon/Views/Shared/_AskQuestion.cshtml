@@ -1,0 +1,43 @@
+﻿
+@model CaseQuestion
+
+@Html.HiddenFor(x => x.CaseID)
+@Html.HiddenFor(x => x.ApplicantID)
+
+    <div id="divAskQuestion">
+        @if (Model.Successful)
+        {
+            <div class="row">
+                <div class="col">
+                    @await Html.PartialAsync("/Views/Shared/_ShowToast.cshtml", new ToastMessage("Success", "Message Sent"))
+                </div>
+            </div>
+        }
+        <div class="modal fade" id="askQuestionModal">
+            <div class="modal-dialog modal-dialog-centered" role="dialog">
+                <div class="modal-content">
+                    <div class="modal-header text-color">
+                        <div class="modal-title" id="exampleModalLabel"><i class="fa fa-question-circle">&nbsp;</i>Question </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="divAskQuestion" class="container">
+                            <div class="row">
+                                <div class="col">
+                                    @Html.TextAreaFor(x => x.Question , new { Style = "width:100%;height:150px", @class="form-control shadow-sm", placeholder = "Type your question here...", })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-modal-footer">
+                        <button type="button" class="btn-default btn-sm  button-cancel" data-dismiss="modal">CANCEL</button>
+                        <button id="btnSendMessage" type="submit" class="btn  button-next btn-sm float-right">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+

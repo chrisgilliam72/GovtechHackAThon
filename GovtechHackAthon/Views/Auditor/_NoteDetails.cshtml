@@ -1,0 +1,17 @@
+﻿
+@model AuditorNoteItem
+@Html.HiddenFor(x => x.AuditorID)
+<div class="row">
+    <div class="col">
+        <div class="form-group">
+            @Html.LabelFor(m => m.Date)
+            @Html.EditorFor(x => x.Date, new { @Class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Date, "", new { @Class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Note)
+            @Html.TextAreaFor(m => m.Note, new { @Class = "form-control shadow-sm" })
+            @Html.ValidationMessageFor(m => m.Note, "", new { @Class = "text-danger" })
+        </div>
+    </div>
+</div>

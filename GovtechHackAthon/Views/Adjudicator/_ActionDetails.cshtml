@@ -1,0 +1,18 @@
+﻿
+@model CaseActionData
+@Html.HiddenFor(x => x.AdjudicatorID)
+@Html.HiddenFor(x => x.CaseID)
+<div class="row">
+    <div class="col">
+        <div class="form-group">
+            @Html.LabelFor(m => m.Date)
+            @Html.EditorFor(x => x.Date, new { @Class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Date, "", new { @Class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Action)
+            @Html.TextAreaFor(m => m.Action, new { @Class = "form-control shadow-sm" })
+            @Html.ValidationMessageFor(m => m.Action, "", new { @Class = "text-danger" })
+        </div>
+    </div>
+</div>

@@ -1,0 +1,66 @@
+﻿@model GovtechHackAthon.Models.RegistrationPurpose
+@Html.HiddenFor(x => x.PurposeID)
+@Html.HiddenFor(x => x.CaseID)
+@Html.HiddenFor(x => x.Motivation)
+@Html.HiddenFor(x => x.CoreValues)
+    <div id="divPurposepartial">
+
+        <div class="card" style="height:100%">
+            <div class="card-header-case" style="color:darkturquoise">
+                Motivation
+            </div>
+
+           
+                <div class="row">
+                    <div class="col">
+                        <div id="txtEditorMotivation"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        @Html.ValidationMessageFor(x => x.Motivation, "", new { @Class = "text-danger" })
+                    </div>
+                </div>
+         
+        </div>
+        <br />
+        <div class="card">
+            <div class="card-header-case" style="color:darkturquoise">
+                Core Values
+            </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div id="txtEditorCoreValues"> </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        @Html.ValidationMessageFor(x => x.CoreValues, "", new { @Class = "text-danger" })
+                    </div>
+                </div>
+           
+        </div>
+        @if (Model.ShowToast)
+        {
+            @await Html.PartialAsync("/Views/Shared/_ShowToast.cshtml", new ToastMessage("Success", "Purpose updated"))
+        }
+    </div>
+<script type="text/javascript">
+
+    $("#txtEditorMotivation").Editor();
+    var editorTxt1 = "@System.Web.HttpUtility.JavaScriptStringEncode(Model.Motivation)";
+    editorTxt1 = editorTxt1.replace(new RegExp("&quot;", "g"), "\"");
+    editorTxt1 = editorTxt1.replace(new RegExp("&fontquot;", "g"), "&quot;");
+    $("#txtEditorMotivation").Editor("setText", editorTxt1);
+
+    $("#txtEditorCoreValues").Editor();
+    editorTxt1 = "@System.Web.HttpUtility.JavaScriptStringEncode(Model.CoreValues)";
+    editorTxt1 = editorTxt1.replace(new RegExp("&quot;", "g"), "\"");
+    editorTxt1 = editorTxt1.replace(new RegExp("&fontquot;", "g"), "&quot;");
+    $("#txtEditorCoreValues").Editor("setText", editorTxt1);
+</script>
+
+
+
+

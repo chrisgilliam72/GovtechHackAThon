@@ -1,0 +1,161 @@
+﻿@model RegistrationBusinessIdea
+
+@{
+    ViewData["Title"] = "BusinessIdea";
+}
+<br />
+
+@using (Html.BeginForm("BusinessIdeaSubmitted", "Registration", FormMethod.Post))
+{
+    @Html.HiddenFor(x => x.How)
+    @Html.HiddenFor(x => x.Impact)
+    @Html.HiddenFor(x => x.What)
+    @Html.HiddenFor(x => x.Who)
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card shadow">
+                <div class="card-body">
+                    <img src="~/images/sidelogo.png" class="img-fluid" /><br />
+                    <text class="font-weight-bold" style="color:orangered">
+                        Describe your Business Idea/Solution!<br />
+                    </text>
+                    <br />
+                    <p>
+                        The Business Idea/Solution consists of four components.
+                        <br /><br />
+                        The first is What problem will you solve, add all the potential problems you can think of solving or the needs you will satisfy in your business idea.
+                        The second component is How, explaining how you will solve the problem. <br /><br />The third component is Who, Now enter the target people for your business idea. It is of-course
+                        closely related to the problem you will solve. This relation will be clearer as you work with the ideas. The last one explains what impact your idea will have.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="card shadow">
+                <div class="card-header-case shadow-sm cardbanner50px" style="background-color:mintcream">
+                    <i class="fa fa-info-circle fa-lg idea-style"></i>
+                    <text class="idea-style">Business Idea/Solution</text>
+                </div>
+                <div class="card-body">
+
+                    <div class="accordion" id="businessIdeaCollapse">
+                        <div class="card">
+                            <div class="card-header-case" id="collapse1">
+                                <a href="#divWhat" class="idea-style" data-toggle="collapse" data-target="#divWhat" aria-expanded="true" aria-controls="divWhat" style="text-decoration:none">
+                                    What problem will you solve?
+                                </a>
+                                <button class="collapsible pull-right" type="button" data-toggle="collapse" data-target="#divWhat" aria-expanded="true" aria-controls="divWhat" />
+                            </div>
+                            <div class="@(Model.NeedsWhat ? "collapse show" : "collapse")" id="divWhat" aria-labelledby="collapse1" data-parent="#businessIdeaCollapse">
+                               
+                                    @Html.ValidationMessageFor(x => x.What, "", new { @Class = "text-danger" })
+                                    <div id="txtEditorWhat"> </div>
+                               
+                            </div>
+                        </div>
+
+
+                        <div class="card">
+                            <div class="card-header-case" id="collapse2">
+                                <a href="#divHow" class="idea-style" data-toggle="collapse" data-target="#divHow" aria-expanded="true" aria-controls="divHow" style="text-decoration:none">
+                                    How will you solve this problem?
+                                </a>
+                                <button class="collapsible pull-right" type="button" data-toggle="collapse" data-target="#divHow" aria-expanded="true" aria-controls="divHow" style="text-decoration:none" />
+
+                            </div>
+                            <div class="@(Model.NeedsHow ? "collapse show" : "collapse")" id="divHow" aria-labelledby="collapse2" data-parent="#businessIdeaCollapse">
+                                
+                                    @Html.ValidationMessageFor(x => x.How, "", new { @Class = "text-danger" })
+                                    <div id="txtEditorHow"> </div>
+                                
+                            </div>
+
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header-case" id="collapse3">
+                                <a href="#divWho" class="idea-style" data-toggle="collapse" data-target="#divWho" aria-expanded="true" aria-controls="divWho" style="text-decoration:none">
+                                    Who has got this problem?
+                                </a>
+                                <button class="collapsible pull-right" type="button" data-toggle="collapse" data-target="#divWho" aria-expanded="true" aria-controls="divWho" style="text-decoration:none" />
+                            </div>
+                            <div class="@(Model.NeedsWho ? "collapse show" : "collapse")" id="divWho" aria-labelledby="collapse3" data-parent="#businessIdeaCollapse">
+                               
+                                    @Html.ValidationMessageFor(x => x.Who, "", new { @Class = "text-danger" })
+                                    <div id="txtEditorWho"> </div>
+                               
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header-case" id="collapse4">
+                                <a href="#divImpact" class="idea-style" data-toggle="collapse" data-target="#divImpact" aria-expanded="true" aria-controls="divImpact" style="text-decoration:none">
+                                    What impact will your idea have?
+                                </a>
+                                <button class="collapsible pull-right" type="button" data-toggle="collapse" data-target="#divImpact" aria-expanded="true" aria-controls="divImpact" style="text-decoration:none" />
+                            </div>
+                            <div class="@(Model.NeedsImpact ? "collapse show" : "collapse")" id="divImpact" aria-labelledby="collapse4" data-parent="#businessIdeaCollapse">
+                         
+                                    @Html.ValidationMessageFor(x => x.Impact, "", new { @Class = "text-danger" })
+                                    <div id="txtEditorImpact"> </div>
+                              
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer cardbanner60px">
+                    <div class="float-right">
+                        <label>Step 06 Of 06 </label>
+                        <input id="btnUpdateBusinessIdea" type="submit" value="Next" class="btn button-next" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script type="text/javascript">
+    $("#txtEditorWhat").Editor();
+    var editorTxt1 = "@System.Web.HttpUtility.JavaScriptStringEncode(Model.What)";
+    editorTxt1 = editorTxt1.replace(new RegExp("&quot;", "g"), "\"");
+    editorTxt1 = editorTxt1.replace(new RegExp("&fontquot;", "g"), "&quot;");
+    $("#txtEditorWhat").Editor("setText", editorTxt1);
+
+    $("#txtEditorHow").Editor();
+    editorTxt1 = "@System.Web.HttpUtility.JavaScriptStringEncode(Model.How)";
+    editorTxt1 = editorTxt1.replace(new RegExp("&quot;", "g"), "\"");
+    editorTxt1 = editorTxt1.replace(new RegExp("&fontquot;", "g"), "&quot;");
+    $("#txtEditorHow").Editor("setText", editorTxt1);
+
+    $("#txtEditorWho").Editor();
+    editorTxt1 = "@System.Web.HttpUtility.JavaScriptStringEncode(Model.Who)";
+    editorTxt1 = editorTxt1.replace(new RegExp("&quot;", "g"), "\"");
+    editorTxt1 = editorTxt1.replace(new RegExp("&fontquot;", "g"), "&quot;");
+    $("#txtEditorWho").Editor("setText", editorTxt1);
+
+    $("#txtEditorImpact").Editor();
+    editorTxt1 = "@System.Web.HttpUtility.JavaScriptStringEncode(Model.Impact)";
+    editorTxt1 = editorTxt1.replace(new RegExp("&quot;", "g"), "\"");
+    editorTxt1 = editorTxt1.replace(new RegExp("&fontquot;", "g"), "&quot;");
+    $("#txtEditorImpact").Editor("setText", editorTxt1);
+
+    $(document).on('click', '#btnUpdateBusinessIdea', function (e) {
+        var txtData = String($("#txtEditorWhat").Editor("getText"));
+        document.getElementById('What').value = txtData.replace(new RegExp("&quot;", "g"), "&fontquot;");
+
+        var txtData = String($("#txtEditorHow").Editor("getText"));
+        document.getElementById('How').value = txtData.replace(new RegExp("&quot;", "g"), "&fontquot;");
+
+        var txtData = String($("#txtEditorWho").Editor("getText"));
+        document.getElementById('Who').value = txtData.replace(new RegExp("&quot;", "g"), "&fontquot;");
+
+        var txtData = String($("#txtEditorImpact").Editor("getText"));
+        document.getElementById('Impact').value = txtData.replace(new RegExp("&quot;", "g"), "&fontquot;");
+    });
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}
+

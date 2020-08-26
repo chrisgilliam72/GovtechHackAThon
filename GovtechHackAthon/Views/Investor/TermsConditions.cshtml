@@ -1,0 +1,48 @@
+﻿@model GovtechHackAthon.Models.TermsConditions;
+
+@{
+    ViewData["Title"] = "TermsConditions";
+}
+<br />
+@using (Html.BeginForm("TermsAndConditionsAccepted", "Investor", FormMethod.Post))
+{
+
+    <br />
+    <div class="card">
+
+        <div class="card-header-case cardbanner50px" style="background-color:mintcream">
+            <div>
+                <i class="fa fa-info-circle fa-lg terms-style"></i>
+                <text class="terms-style">
+                    Privacy and Terms
+                </text>
+            </div>
+        </div>
+        <div class="card-body">
+            @await Html.PartialAsync("/Views/Shared/_TermsConditionsPartial.cshtml", Model)
+        </div>
+    </div>
+    <div class="card-footer cardbanner60px">
+        <div class="float-right">
+            <input type="submit" value="Accept" class="btn button-next" />
+        </div>
+    </div>
+
+}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
+<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.js"></script>
+<script src="//ajax.aspnetcdn.com/ajax/mvc/5.2.3/jquery.validate.unobtrusive.js"></script>
+
+<script>
+    // extend jquery range validator to work for required checkboxes
+    var defaultRangeValidator = $.validator.methods.range;
+    $.validator.methods.range = function (value, element, param) {
+        if (element.type === 'checkbox') {
+            // if it's a checkbox return true if it is checked
+            return element.checked;
+        } else {
+            // otherwise run the default validation function
+            return defaultRangeValidator.call(this, value, element, param);
+        }
+    }
+</script>

@@ -1,0 +1,26 @@
+﻿@model AuditorNotesList
+
+    <div id="divAuditorNotesTable">
+        
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead style="background-color:azure">
+                    <tr>
+                        <th>Auditor</th>
+                        <th>Date</th>
+                        <th>Note</th>
+                    </tr>
+                </thead>
+                <tbody class="table-bordered">
+                    @foreach ( var note in Model.Notes)
+                    {
+                    <tr>
+                        <td>@Html.DisplayFor(x => note.Auditor) </td>
+                        <td>@Html.DisplayFor(x => note.Date) </td>
+                        <td>@Html.DisplayFor(x => note.Note) </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>

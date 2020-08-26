@@ -1,0 +1,95 @@
+﻿@{
+    ViewData["Title"] = "Contact";
+}
+<br />
+<div class="text-center">
+    <h2>@ViewData["Title"]</h2>
+</div>
+<hr />
+
+<h5 class="text-center">Need some help? Send your enquiry through our contact form. We will be happy to help!</h5>
+<div class="panel panel-default" style="background-image:url('/images/bbg.png')">
+    <br />
+
+    <div class="row">
+        <div class="col-md-6">
+
+
+            <div class="container">
+                <h5>Contact Form</h5>
+                <form action="/action_page.php">
+                    <label for="fname">First Name</label>
+                    <input type="text" id="fname" class="form-control" name="firstname" placeholder="Your name..">
+                    <label for="fname">First Name</label>
+                    <input type="text" id="lname" class="form-control" name="lastname" placeholder="Your last name..">
+                    <label for="phoneNumber">Phone Number</label>
+                    <input type="number" id="phoneNumber" class="form-control" name="lastname" placeholder="Your phone number..">
+                    <label for="emailAddress">Email Address</label>
+                    <input type="email" id="emailAddress" class="form-control" name="emailAddress" placeholder="Your email address..">
+                    <label for="subject">Subject</label>
+                    <textarea id="subject" name="subject" class="form-control" placeholder="Write something.." style="height:150px"></textarea>
+
+                    <input type="submit" value="Send" class="btn card-button" />
+                </form>
+                <br />
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="container">
+                <h5>Address</h5><br />
+                <div class="media">
+                    <div class="media-left">
+
+                        <i class="fa fa-map-marker-alt fa-lg media-object" style="color:#F49B0C"></i> &nbsp;&nbsp;
+                    </div>
+                    <div class="media-body">
+                        <p class="media-heading">
+                            459 Tsitsa Street<br />
+                            Erasmuskloof<br />
+                            Pretoria, 0048<br />
+
+                        </p>
+                    </div>
+                </div>
+                <div class="media">
+                    <div class="media-left">
+
+                        <i class="fa fa-phone fa-lg media-object" style="color:#F49B0C"></i> &nbsp;&nbsp;
+                    </div>
+                    <div class="media-body">
+                        <p class="media-heading">
+                            +27 800 764 222
+
+                        </p>
+                    </div>
+                </div>
+                <div class="media">
+                    <div class="media-left">
+
+                        <i class="fa fa-envelope fa-lg media-object" style="color:#F49B0C"></i> &nbsp;&nbsp;
+                    </div>
+                    <div class="media-body">
+                        <p class="media-heading">
+                            <strong><a href="mailto:contact.centre@sita.co.za"> contact.centre@sita.co.za</a></strong>
+
+                        </p>
+                    </div>
+                </div>
+                <hr style="border:1px solid grey" />
+                <br />
+                <h5>Follow us from</h5>
+
+                <div style="float:left" class="text-left">
+                    <a href="https://www.facebook.com/sitasocltd" target="_blank"><i class="fab fa-facebook fa-2x"></i></a>
+                    <a href="https://www.twitter.com/govetechZA" target="_blank">   <i class="fab fa-twitter fa-2x"></i></a>
+                    <a href="https://www.instagram.com/govtechZA" target="_blank"><i class="fab fa-instagram fa-2x"></i> </a>
+                    <a href="https://www.linkedin.com/govtechZA" target="_blank">  <i class="fab fa-linkedin fa-2x"></i></a>
+                    <br /><br />
+                </div>
+
+            </div>
+        </div>
+        <br />
+    </div>
+</div>

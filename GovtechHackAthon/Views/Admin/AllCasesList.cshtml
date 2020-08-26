@@ -1,0 +1,77 @@
+﻿@model GovtechHackAthon.Models.AllCasesList
+@inject GovtechHackAthon.Services.DBAPI dbAPI
+@{
+    Layout = "_AdminDashboardLayout";
+    ViewData["Title"] = "CaseList";
+}
+<br />
+@using (Html.BeginForm("UpdateCaseAssignments", "Admin", FormMethod.Post))
+{
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header-case shadow-sm caselist-style" style="background-color:mintcream">
+                <i class="fas fa-tasks fa-lg caselist-style"></i>
+                <text class="caselist-style">
+                    All Proposals
+                </text>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Proposal Name</th>
+                                <th>Date Submitted </th>
+                                <th>Approval</th>
+                                <th>Assigned To Group </th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-bordered">
+                            @{
+                                var usersLst = new SelectList(dbAPI.GetAllGroups(), "GroupID", "Name");
+                                var caseCount = Model.CaseAssignments.Count;
+                                for (int i = 0; i < caseCount; i++)
+                                {
+                                    @Html.HiddenFor(x => Model.CaseAssignments[i].CaseID)
+                                    <tr>
+                                        <td class="text-capitalize">@Html.ActionLink(Model.CaseAssignments[i].CaseName, "CaseDetail", "Admin", new { CaseID = Model.CaseAssignments[i].CaseID })</td>
+                                        <td>@Html.DisplayFor(x => Model.CaseAssignments[i].DateSubmitted)</td>
+                                        <td>@Html.DisplayFor(x => Model.CaseAssignments[i].Status)</td>
+                                        @if (Model.CaseAssignments[i].AdminApproved.HasValue && Model.CaseAssignments[i].AdminApproved.Value)
+                                        {
+                                            <td>
+                                                <div>
+                                                    @Html.DropDownListFor(x => Model.CaseAssignments[i].AssignedtoGroupID,
+                                               usersLst,
+                                               "Select Group",
+                                               new { @Class = "form-control-country" })
+                                                </div>
+                                                <div>
+                                                    @Html.ValidationMessageFor(x => Model.CaseAssignments[i].AssignedtoGroupID, "", new { @Class = "text-danger" })
+                                                </div>
+                                            </td>
+
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                            </td>
+                                        }
+                                    </tr>
+
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer cardbanner60px">
+                <div class="float-right">
+
+                    <button type="submit" class="btn button-next"><i class="fa fa-floppy-o fa-lg"> </i> Save</button>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        }

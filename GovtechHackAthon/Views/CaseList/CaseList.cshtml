@@ -1,0 +1,156 @@
+﻿@model GovtechHackAthon.Models.ApplicantCaseList
+@{
+
+    ViewData["Title"] = "CaseList";
+}
+<br />
+<div class="row">
+    <div class="col-md-3">
+        <div class="card shadow">
+            <div class="card-body">
+                <div>
+                    <img src="~/images/sidelogo.png" class="img-fluid" /><br />
+                    <text style="color:orangered">
+                        <b>  My Proposal Dashboard!</b>
+                    </text>
+                </div>
+                <p>
+                    <br />
+                    There is no limitation on how many ideas you can create or submit.  If you want to create an idea and only submit next year, you are welcome to do so.
+                </p>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="card shadow">
+
+            <div class="card-body">
+                <div class="card">
+                    <div class="card-header shadow-sm" style="background-color:mintcream">
+                        <div>
+                            <i class="fas fa-file-alt fa-lg caselist-style"></i>
+                            <text class="caselist-style">
+                                My Proposals
+                            </text>
+                        </div>
+
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered table-responsive-sm table-striped">
+                            <thead style="background-color:azure">
+                                <tr>
+                                    <th>Proposal Name</th>
+                                    <th>Proposal Date Submitted </th>
+                                    <th>Proposal Status </th>
+                                    <th>Delete Proposal</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-bordered">
+                                @{
+                                    int dlgIndex = 0;
+                                }
+                                @foreach (var caseItem in Model.MyCases)
+                                {
+                                    var modelDeleteID = "modalDelete" + dlgIndex;
+                                    var delBtnID = "btnDelTeamMember" + dlgIndex;
+
+                                    <tr>
+                                        <td class="text-capitalize">@Html.ActionLink(caseItem.CaseName, "Case", "Applicant", new { CaseID = caseItem.CaseID })</td>
+                                        <td>@Html.DisplayFor(x => caseItem.DateSubmitted)</td>
+                                        <td>@Html.DisplayFor(x => caseItem.Status)</td>
+                                        <td>
+                                            @{
+                                                if (caseItem.CanDelete)
+                                                {
+                                                    <button class="tnSubmit btn-trash" type="button" data-toggle="modal" data-target="#@modelDeleteID"> <i class="far fa-trash-alt fa-lg"></i></button>
+                                                }
+                                                else
+                                                {
+                                                    <button class="btnSubmit btn-trash" type="button" disabled> <i class="far fa-trash-alt fa-lg"></i></button>
+                                                }
+                                            }
+                                            @using (Html.BeginForm("CancelCase", "CaseList", FormMethod.Post))
+                                            {
+                                                @Html.HiddenFor(m => Model.ApplicantID)
+                                                @Html.HiddenFor(m => caseItem.CaseID)
+                                                <div class="modal fade" id="@modelDeleteID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header text-color">
+                                                                <div class="modal-title" id="exampleModalLongTitle"><i class="fa fa-trash-alt">&nbsp;</i>Confirm Delete</div>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                Are you sure you want to delete this proposal ?
+                                                            </div>
+                                                            <div class="modal-footer bg-modal-footer">
+                                                                <button type="button" class="btn-default btn-sm  button-cancel" data-dismiss="modal">CANCEL</button>
+                                                                <button id="@delBtnID" type="submit" class="btn button-next  btn-sm btnSubmit float-right">DELETE PROPOSAL</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </td>
+
+                                    </tr>
+                                    dlgIndex++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br />
+
+                <div class="card">
+                    <div class="card-header shadow-sm" style="background-color:mintcream">
+                        <div>
+                            <i class="fas fa-users-cog fa-lg caselist-style"></i>
+                            <text class="caselist-style">
+                                My Team Proposals
+                            </text>
+                        </div>
+
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered table-responsive-sm table-striped">
+                            <thead style="background-color:azure">
+                                <tr>
+                                    <th>Proposal Name</th>
+                                    <th>Proposal Date Submitted </th>
+                                    <th>Proposal Status </th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-bordered">
+                                @foreach (var caseItem in Model.TeamCases)
+                                {
+                                    var modelDeleteID = "modalDelete" + dlgIndex;
+                                    var delBtnID = "btnDelTeamMember" + dlgIndex;
+                                    <tr>
+                                        <td class="text-capitalize">@Html.ActionLink(caseItem.CaseName, "Case", "Applicant", new { CaseID = caseItem.CaseID })</td>
+                                        <td>@Html.DisplayFor(x => caseItem.DateSubmitted)</td>
+                                        <td>@Html.DisplayFor(x => caseItem.Status)</td>
+
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer cardbanner60px">
+                <div class="float-right">
+                    <button class="btn button-next" value="" onclick="location.href='@Url.Action("NewCase", "CaseList")'"><i class="fa fa-plus"></i>&nbsp;    add new proposal</button>
+                    <!-- <input type="button" class="btn card-button" value="New Case" onclick="location.href='@Url.Action("NewCase", "CaseList")'" />-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+

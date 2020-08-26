@@ -1,0 +1,153 @@
+﻿@model GovtechHackAthon.Models.CaseDashboard
+
+    <div id="tblMembers">
+
+        <table class="table table-responsive-lg table-striped table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Email Address</th>
+                    <th>Contact Number</th>
+                    <th>ID Number</th>
+                    <th>Gender</th>
+                    <th>Race</th>
+                    <th>Country</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="">
+                @{
+                    int dlgIndex = 0;
+                }
+                @foreach (var teamMember in Model.TeamMembers)
+                {
+                    string dialogID = "teamMemberModalEdit" + dlgIndex;
+                    var modelDeleteID = "modalDelete" + dlgIndex;
+                    var modelUpdateID = "modelUpdate" + dlgIndex;
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(m => teamMember.FullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => teamMember.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => teamMember.PhoneNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => teamMember.ID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => teamMember.Race)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => teamMember.Gender)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => teamMember.Country)
+                        </td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-bars" style="color:black"></i>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                    <button class=" far fa-edit dropdown-item btnSubmit" type="button" data-toggle="modal" data-target="#@modelUpdateID"> Edit</button>
+                                    @if (Model.TeamMembers.Count > 3)
+                                    {
+                                        <button class="far fa-trash-alt dropdown-item btnSubmit" type="button" data-toggle="modal" data-target="#@modelDeleteID"> Delete</button>
+                                    }
+                                    else
+                                    {
+                                        <button class="far fa-trash-alt dropdown-item btnSubmit" type="button" disabled> Delete</button>
+                                    }
+
+                                </div>
+                            </div>
+
+
+                            @*@using (Html.BeginForm("UpdateTeamMember", "Dashboard", teamMember, FormMethod.Post, null, new { id = "UpdateTeamForm" + dlgIndex }))*@
+                            @{
+                                var buttonID = "btnEditTeamMember" + dlgIndex;
+
+                                <div class="modal fade" id="@modelUpdateID">
+                                    <form id="@dialogID" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#tblMembers" asp-action="UpdateTeamMember" asp-controller="Applicant" role="form" data-ajax-method="post">
+                                        <div class="modal-dialog modal-dialog-centered" role="dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header text-color">
+                                                    <div class="modal-title" id="exampleModalLabel"><i class="fa fa-edit">&nbsp;</i>Team Member Details</div>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    @await Html.PartialAsync("/Views/Shared/_TeamMemberDetails.cshtml", teamMember)
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn-default btn-sm  button-cancel" data-dismiss="modal">CANCEL</button>
+                                                    <button id="@buttonID" type="submit" class="btn  button-next btn-sm float-right">Update</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            }
+
+                            <form id="@dialogID" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#tblMembers" asp-action="DeleteTeamMember" asp-controller="Applicant" role="form" data-ajax-method="post">
+                                @{
+                                    var delBtnID = "btnDelTeamMember" + dlgIndex;
+
+                                    @Html.HiddenFor(m => teamMember.TeamMemberID)
+                                    @Html.HiddenFor(m => teamMember.CaseID)
+                                    <div class="modal fade" id="@modelDeleteID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header text-color">
+                                                    <div class="modal-title" id="exampleModalLongTitle"><i class="fa fa-trash-alt fa-lg">&nbsp;</i>Confirm Delete</div>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to remove this team member ?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn-default btn-sm  button-cancel" data-dismiss="modal">CANCEL</button>
+                                                    <button id="@delBtnID" type="submit" class="btn button-next  btn-sm btnSubmit float-right">Delete</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                }
+                            </form>
+                        </td>
+                    </tr>
+                    dlgIndex++;
+                }
+            </tbody>
+        </table>
+
+        <div class="float-right">
+            @if (Model.TeamMembers.Count < 4)
+            {
+                <button type="button" class="btn  button-next btn-sm btnSubmit float-right" data-toggle="modal" data-target="#teamMemmberModal">Add team member</button>
+            }
+            else
+            {
+                <button type="button" class="btn  button-next btn-sm btnSubmit float-right" disabled>Add team member</button>
+            }
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+
+

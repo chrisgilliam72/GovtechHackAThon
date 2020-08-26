@@ -1,0 +1,63 @@
+﻿@{
+    ViewData["Title"] = "Calendar";
+    Layout = "~/Views/Admin/_AdminDashboardLayout.cshtml";
+}
+@model AdminCalendar
+<br />
+@using (Html.BeginForm("UpdateCalendar", "Admin", FormMethod.Post))
+{
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header-case shadow-sm" style="background-color:mintcream">
+            <i class="far fa-calendar-alt fa-lg caselist-style" aria-hidden="true"></i>
+            <text class="caselist-style">
+                Adjudication dates for : @Model.Year
+            </text>
+
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Event</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int eventCount = Model.Events.Count;
+                        }
+                        @for (int i = 0; i < eventCount; i++)
+                        {
+                            @Html.HiddenFor(x => Model.Events[i].StartEventID)
+                            @Html.HiddenFor(x => Model.Events[i].EndEventID)
+                            @Html.HiddenFor(x => Model.Events[i].StageNo)
+                            <tr>
+                                <td>@Html.DisplayFor(x => Model.Events[i].Name)</td>
+                                <td>@Html.EditorFor(x => Model.Events[i].DateStart, null, new { type = "date" })</td>
+                                <td>@Html.EditorFor(x => Model.Events[i].DateEnd, null, new { type = "date" })</td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer cardbanner60px">
+            <div class="float-right">
+                <input type="submit" class="btn button-next" value="Update" />
+            </div>
+        </div>
+    </div>
+</div>
+        @if (Model.ShowUpdateSuccess)
+        {
+            <div>
+                @await Html.PartialAsync("/Views/Shared/_ShowToast.cshtml", new ToastMessage("Success", "Calendar updated"))
+            </div>
+        }
+
+        }
+

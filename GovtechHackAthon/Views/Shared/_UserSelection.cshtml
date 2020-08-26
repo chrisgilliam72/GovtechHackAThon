@@ -1,0 +1,30 @@
+﻿@model UserListSelection
+<div class="card">
+    <div class="card-header-group shadow-sm" style="color:cadetblue">
+        @Model.DisplayTitle
+        @Html.HiddenFor(x=>x.GroupID)
+    </div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="col-11">Name</th>
+                    <th class="col-1"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ 
+                    for (int i=0;i<Model.ItemCount;i++)
+                    {
+                        <tr>
+                            @Html.HiddenFor(m=>Model.ListUsers[i].UserID)
+                            <td class="col-11">@Model.ListUsers[i].DisplayName</td>
+                            <td class="col-1">@Html.CheckBoxFor(m=>Model.ListUsers[i].Selected)</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

@@ -1,0 +1,76 @@
+﻿@model CaseActionsList
+<div class="row">
+    <div class="col">
+        <table class="table table-bordered table-striped table-responsive-sm">
+            <thead class="bg-light">
+                <tr>
+                    <th>Date</th>
+                    <th>Action</th>
+                    <th>User</th>
+                    <th>Actions</th>
+                </tr>
+
+            </thead>
+            <tbody>
+                @{
+                    int dlgIndex=0;
+                }
+                @foreach (var action in Model.Actions)
+                {
+                    var frmID = "FrmDelAction" + dlgIndex;
+                    var modalID="ModalDelAction" + dlgIndex;
+                    var btnID="btnDelAction" + dlgIndex;
+                    <tr>
+                        <td>@Html.DisplayFor(m=>action.Date)</td>
+                        <td>@Html.DisplayFor(m=>action.Action)</td>
+                        <td>@Html.DisplayFor(m => action.Adjudicator)</td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-bars"></i>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                    @if (action.AdjudicatorID == Model.AdjudicatorID)
+                                    {
+                                        <button class=" far fa-edit dropdown-item btnSubmit" type="button" data-toggle="modal" data-target="#@modalID">Delete</button>
+                                    }
+                                    else
+                                    {
+                                        <button class=" far fa-edit dropdown-item btnSubmit" type="button"  disabled>Delete</button>
+                                    }
+                                </div>
+                            </div>
+
+                            <form id="@frmID" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#divPartialActionTable" asp-action="RemoveActionPartial" asp-controller="Adjudicator" role="form" data-ajax-method="post">
+                                @Html.HiddenFor(m => action.ID)
+                                @Html.HiddenFor(m => action.CaseID)
+                                @Html.HiddenFor(m => action.AdjudicatorID)
+                                <div class="modal fade" id="@modalID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header text-color">
+                                                <div class="modal-title" id="exampleModalLongTitle"><i class="fa fa-trash-alt">&nbsp;</i>Remove action</div>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to remove this action?
+                                            </div>
+                                            <div class="modal-footer bg-modal-footer">
+                                                <button type="button" class="btn  btn-sm  button-next" data-dismiss="modal">Cancel</button>
+                                                <button id="@btnID" type="submit" class="btn button-next  btn-sm btnSubmit float-right">Remove</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+                    dlgIndex++;
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>

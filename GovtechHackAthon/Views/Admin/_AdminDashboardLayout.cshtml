@@ -1,0 +1,24 @@
+﻿@{
+    Layout = "_Layout";
+}
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@ViewBag.Title</title>
+    </head>
+<body>
+    <div class="sidenav">
+        <a href="@Url.Action("Dashboard","Admin")"><i class="fa fa-home fa-lg text-danger"></i>&nbsp;&nbsp;&nbsp;Home</a><div class="hr-lines"></div>
+        <a href="@Url.Action("Users","Admin")"><i class="fa fa-users fa-lg text-danger"></i>&nbsp;&nbsp;&nbsp;Users</a><div class="hr-lines"></div>
+        <a href="@Url.Action("Groups","Admin")"><i class="fa fa-user-friends fa-lg text-danger"></i>&nbsp;&nbsp;&nbsp;Groups</a><div class="hr-lines"></div>
+        <a href="@Url.Action("AllCasesList","Admin")"><i class="fas fa-tasks fa-lg text-danger"></i>&nbsp;&nbsp;&nbsp;&nbsp;Proposals</a><div class="hr-lines"></div>
+        <a href="@Url.Action("Scoreboard","Admin")"><i class="fas fa-star-half-alt fa-lg text-danger"></i>&nbsp;&nbsp;&nbsp;Scoreboard</a><div class="hr-lines"></div>
+        <a href="@Url.Action("Investors","Admin")"> <i class="fas fa-money-check-alt fa-lg text-danger"></i>&nbsp;&nbsp;&nbsp;Investors</a><div class="hr-lines"></div>
+        <a href="@Url.Action("Calendar","Admin")"> <i class="far fa-calendar-alt fa-lg text-danger"></i>&nbsp;&nbsp;&nbsp;Calendar</a><div class="hr-lines"></div>
+    </div>
+
+    <div class="content">
+        @RenderBody()
+    </div>
+</body>
+@RenderSection("Scripts", required: false)
+

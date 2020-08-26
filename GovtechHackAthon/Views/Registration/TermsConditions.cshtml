@@ -1,0 +1,60 @@
+﻿@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+@model GovtechHackAthon.Models.TermsConditions;
+
+@{
+    ViewData["Title"] = "TermsConditions";
+}
+<br />
+@using (Html.BeginForm("TermsAndConditionsAccepted", "Registration", FormMethod.Post))
+{
+    
+    var stringConfirmLink = HttpContextAccessor.HttpContext.Session.GetString("Confirmlink");
+    <div class="card">
+        <div class="card-body">
+            <span>
+               @stringConfirmLink
+            </span>
+        </div>
+    </div>
+       <div class="card shadow">
+        <div class="card-header-case cardbanner50px shadow-sm bg-title">
+            <div>
+                <i class="fa fa-info-circle fa-lg terms-style"></i>
+                <text class="terms-style">
+                    Privacy and Terms
+                </text>
+            </div>
+        </div>
+        <div class="card-body fixed-header-footer">
+            @await Html.PartialAsync("/Views/Shared/_TermsConditionsPartial.cshtml", Model)
+        </div>
+        <div class="card-footer cardbanner60px">
+            <div class="float-right">
+                <label>Step 02 Of 06 </label>
+                <input type="submit" value="Next" class="btn button-next" />
+            </div>
+        </div>
+    </div>
+}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
+<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.js"></script>
+<script src="//ajax.aspnetcdn.com/ajax/mvc/5.2.3/jquery.validate.unobtrusive.js"></script>
+
+<script>
+    // extend jquery range validator to work for required checkboxes
+    var defaultRangeValidator = $.validator.methods.range;
+    $.validator.methods.range = function (value, element, param) {
+        if (element.type === 'checkbox') {
+            // if it's a checkbox return true if it is checked
+            return element.checked;
+        } else {
+            // otherwise run the default validation function
+            return defaultRangeValidator.call(this, value, element, param);
+        }
+    }
+</script>
+
+
+
+

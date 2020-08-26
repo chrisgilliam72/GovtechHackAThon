@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewData["Title"] = "Investors";
+    Layout = "~/Views/Admin/_AdminDashboardLayout.cshtml";
+}
+@model InvestorsTable
+<br />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header-case shadow-sm" style="background-color:mintcream">
+                    <i class="fas fa-money-check-alt fa-lg caselist-style"></i>
+                    <text class="caselist-style">
+                        Investors
+                    </text>
+                </div>
+                <div class="card-body">
+                    @await Html.PartialAsync("/Views/Investor/_InvestorsTable.cshtml", Model)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+        <script type="text/javascript">
+            $(document).on('click', "[id*='btnApprovID']", function (e) {
+                var lastChar = this.id[this.id.length - 1];
+                $('.modal-backdrop').remove();
+            })
+
+            $(document).on('click', "[id*='btnActUser']", function (e) {
+                var lastChar = this.id[this.id.length - 1];
+                $('.modal-backdrop').remove();
+            })
+
+            $(document).on('click', "[id*='btnDelUser']", function (e) {
+                var lastChar = this.id[this.id.length - 1];
+                $('.modal-backdrop').remove();
+            })
+
+        </script>
+    }

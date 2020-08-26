@@ -1,0 +1,166 @@
+﻿@model GovtechHackAthon.Models.Contact;
+@{
+    ViewData["Title"] = "Index";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+<br />
+<div class="card">
+    <div class="card-header-case shadow-sm" style="background-color:mintcream; color:black">
+        <i class="fa fa-info-circle fa-lg">&nbsp;</i>Contact Us
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-7">
+                <div class="card shadow">
+                    <div class="card-header-contact shadow-sm " style="color:black;background-color:mintcream; border-radius:12px">
+                        Contact Form
+                    </div>
+                    <div class="card-body">
+                        <form method="post" asp-controller="contact" asp-action="send" class="form form-horizontal">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-row">
+                                <div class="input-group-sm col-md-6">
+                                    <label asp-for="FirstName" class="control-label">FirstName</label>
+                                    <input asp-for="FirstName" class="form-control" />
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+                                <div class="input-group-sm col-md-6">
+                                    <label asp-for="LastName" class="control-label">LastName</label>
+                                    <input asp-for="LastName" class="form-control" />
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="input-group-sm col-md-6">
+                                    <label asp-for="Phone" class="control-label">Phone Number</label>
+                                    <input asp-for="Phone" class="form-control" />
+                                    <span asp-validation-for="Phone" class="text-danger"></span>
+                                </div>
+                                <div class="input-group-sm col-md-6">
+                                    <label asp-for="Email" class="control-label">Email Address</label>
+                                    <input asp-for="Email" class="form-control" type="email" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="input-group-sm">
+                                <label asp-for="Subject" class="control-label">Subject</label>
+                                <input asp-for="Subject" class="form-control" type="text" />
+                                <span asp-validation-for="Subject" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Message" class="control-label">Message</label>
+
+                                <textarea asp-for="Message" rows="7" class="form-control"></textarea>
+                                <span asp-validation-for="Message" class="text-danger"></span>
+
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Send" class="btn button-next" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-5 border bg-light" style="border-radius:12px">
+                <br /><br /><br /><br />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header-contact shadow-sm bg-light" style="color:black; border-radius:12px">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <i class="fa fa-phone fa-lg media-object text-danger"></i> &nbsp;&nbsp;Contact Number
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="media-body">
+                                    <div class="media-heading">
+                                        <b> Tel:</b> 012 482 3000<br />
+                                        <b> Fax:</b> +27 12 367 5151<br />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header-contact shadow-sm bg-light" style="color:black; border-radius:12px">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <i class="fa fa-envelope fa-lg media-object text-danger"></i> &nbsp;&nbsp;Email Address
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="media-body">
+                                    <p class="media-heading">
+                                        <b> Email:</b> <a href="mailto:contact.centre@sita.co.za" style="color:black"> contact.centre@sita.co.za</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br /><br />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header-contact shadow-sm bg-light" style="color:black; border-radius:12px">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <i class="fas fa-map-marker fa-lg media-object text-danger"></i> &nbsp;&nbsp;Postal Address
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="media-body">
+                                    <div class="media-heading">
+                                        P.O. Box 26100<br />
+                                        Monument Park<br />
+                                        Pretoria, 0105
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header-contact shadow-sm bg-light" style="color:black; border-radius:12px">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <i class="fas fa-map-marker-alt fa-lg media-object text-danger"></i> &nbsp;&nbsp;Physical Address
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="media-body">
+                                    <div class="media-heading">
+                                        459 Tsitsa Street<br />
+                                        Eramuskloof<br />
+                                        Pretoria, 0081
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br /><br />
+                <div class="social">
+                    Follow us&nbsp;&nbsp;&nbsp;
+                    <a href="https://www.facebook.com/sitasocltd" target="_blank"><i class="fa fa-facebook"></i></a>
+                    <a href="https://www.twitter.com/govetechZA" target="_blank">   <i class="fa fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/govtechZA" target="_blank"><i class="fa fa-instagram"></i> </a>
+                    <a href="https://www.linkedin.com/govtechZA" target="_blank">  <i class="fa fa-linkedin"></i></a>
+
+                </div>
+                <br />
+            </div>
+        </div>
+
+    </div>
+</div>

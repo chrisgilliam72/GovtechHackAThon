@@ -1,0 +1,98 @@
+﻿@model GovtechHackAthon.Models.TeamMemberData
+@inject GovtechHackAthon.Services.DBLookupService DBLookupService
+@Html.HiddenFor(x => x.CaseID)
+@Html.HiddenFor(x => x.TeamMemberID)
+<div class="container">
+    @{
+        var races = new SelectList(DBLookupService.GetRaces(), "PkId", "Name");
+        var genders = new SelectList(DBLookupService.GetGenders(), "PkId", "Name");
+        var provinces = new SelectList(DBLookupService.GetProvinces(), "PkId", "Name");
+        var countries = DBLookupService.GetCountries();
+        var pkIDSouthAfrica = countries.FirstOrDefault(x => x.Name == "South Africa").PkId;
+        var drpDownID = "drpDwnCountry" + Model.Index;
+        var cityID= "divCity" + Model.Index;
+        var provinceID = "divProv" + Model.Index;
+        var dobID = "divDOB" + Model.Index;
+        var IDNoID = "divIDNo" + Model.Index;
+        if (Model.IsNew)
+            Model.CountryID = pkIDSouthAfrica;
+        <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.FirstName)
+                        @Html.TextBoxFor(x => x.FirstName, new { @Class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.FirstName, "", new { @Class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Gender)
+                        @Html.DropDownListFor(m => m.GenderID, genders, "Gender", new { @Class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.GenderID, "", new { @Class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Email)
+                        @Html.TextBoxFor(x => x.Email, new { @Class = "form-control", Type = "email" })
+                        @Html.ValidationMessageFor(x => x.Email, "", new { @Class = "text-danger" })
+                    </div>
+                    <div class=@(Model.CountryID == pkIDSouthAfrica ? "form-group d-block" : "d-none")  id="@IDNoID">
+                        @Html.LabelFor(x => x.ID)
+                        @Html.TextBoxFor(x => x.ID, new { @Class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.ID, "", new { @Class = "text-danger" })
+                    </div>
+
+                    <div class=@(Model.CountryID != pkIDSouthAfrica ? "form-group d-block" : "d-none") id="@dobID">
+                        @Html.LabelFor(x => x.DateOfBirth)
+                        @Html.EditorFor(x => x.DateOfBirth, new { @Class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.DateOfBirth, "", new { @Class = "text-danger" })
+                    </div>
+
+                    <div class=@(Model.CountryID == pkIDSouthAfrica ? "form-group d-block" : "d-none") id=@cityID>
+                        @Html.LabelFor(x => x.City, "City")
+                        @Html.TextBoxFor(x => x.City, new { @Class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.City, "", new { @Class = "text-danger" })
+                    </div>
+
+
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Surname)
+                        @Html.TextBoxFor(x => x.Surname, new { @Class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.Surname, "", new { @Class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Race)
+                        @Html.DropDownListFor(m => m.RaceID, races, "Race", new { @Class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.RaceID, "", new { @Class = "text-danger" })
+
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.PhoneNumber)
+                        @Html.TextBoxFor(x => x.PhoneNumber, new { @Class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.PhoneNumber, "", new { @Class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Country)
+                        @Html.DropDownListFor(m => m.CountryID, new SelectList(countries, "PkId", "Name"), new { @Class = "form-control", Id = drpDownID })
+                        @Html.ValidationMessageFor(m => m.CountryID, "", new { @Class = "text-danger" })
+                    </div>
+
+                    <div class= @(Model.CountryID == pkIDSouthAfrica ? "form-group d-block" : "d-none")  id=@provinceID>
+                        @Html.LabelFor(m => m.Province)
+                        @Html.DropDownListFor(m => m.ProvinceID, provinces, "Province", new { @Class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ProvinceID, "", new { @Class = "text-danger" })
+                    </div>
+
+                </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-check">
+                    @Html.CheckBoxFor(x => x.IsStudent, new { @Class = "form-check-input", id = "chkboxStudent" })
+                    <label class="form-check-label" for="chkboxStudent">I am a student</label>
+                </div>
+            </div>
+
+        </div>
+
+    }
+</div>

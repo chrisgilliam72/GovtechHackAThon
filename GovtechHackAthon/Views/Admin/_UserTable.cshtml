@@ -1,0 +1,161 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model GovtechHackAthon.Models.UserList
+    <div id="divPartialUsersTable">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Active</th>
+                        <th>First Name</th>
+                        <th>Surname</th>
+                        <th>Contact No</th>
+                        <th>Email</th>
+                        <th>City</th>
+                        <th>Province</th>
+                        <th>User Level</th>
+                        <th>Can Edit</th>
+                        <th>Can Assign</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="table-bordered">
+                    @{
+                        int dlgIndex = 0;
+                    }
+                    @foreach (var user in Model.Users)
+                    {
+                        var frmUpdateUsrID = "frmUpdateUsrID" + dlgIndex;
+                        var frmActivateID = "frmActivateUsr" + dlgIndex;
+                        var frmDeActivateUsrID = "frmDeActivateUsr" + dlgIndex;
+                        var modalDeleteID = "modalDelete" + dlgIndex;
+                        var modalUpdateID = "modalUpdate" + dlgIndex;
+                        var modalActivateID = "modalActivate" + dlgIndex;
+                        var updateBtnID = "btnEditUser" + dlgIndex;
+                        var actBtnID = "btnActUser" + dlgIndex;
+                        var delBtnID = "btnDelUser" + dlgIndex++;
+                        <tr>
+                            <td>@Html.CheckBoxFor(x => user.IsActive, new { disabled = "true" }) @Html.DisplayFor(x => user.UserID)</td>
+                            <td>@Html.DisplayFor(x => user.FirstName)</td>
+                            <td>@Html.DisplayFor(x => user.Surname)</td>
+                            <td>@Html.DisplayFor(x => user.ContactNo)</td>
+                            <td>@Html.DisplayFor(x => user.Email)</td>
+                            <td>@Html.DisplayFor(x => user.City)</td>
+                            <td>@Html.DisplayFor(x => user.Province)</td>
+                            <td>@Html.DisplayFor(x => user.UserLevel)</td>
+                            <td>@Html.DisplayFor(x => user.CanEditCasesDispay)</td>
+                            <td>@Html.DisplayFor(x => user.CanAssignCasesDisplay)</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-bars"></i>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                        <button class="dropdown-item btnSubmit" type="button" data-toggle="modal" data-target="#@modalUpdateID"><i class="fa fa-edit"></i> Edit</button>
+                                        @if (user.IsActive)
+                                        {
+                                            <button class="dropdown-item btnSubmit" type="button" data-toggle="modal" data-target="#@modalDeleteID"> <i class="fa fa-trash-alt"></i> Deactivate</button>
+                                        }
+                                        else
+                                        {
+                                            <button class="dropdown-item btnSubmit" type="button" data-toggle="modal" data-target="#@modalActivateID"> <i class="fa fa-trash-alt"></i> Activate</button>
+                                        }
+                                    </div>
+                                </div>
+
+                                <form id="@frmUpdateUsrID" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#divPartialUsersTable" asp-action="UpdateUser" asp-controller="Admin" role="form" data-ajax-method="post">
+                                    <div class="modal fade" id="@modalUpdateID">
+                                        <div class="modal-dialog modal-dialog-centered" role="dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header text-color">
+                                                    <h6 class="modal-title" id="exampleModalLabel"><i class="fas fa-user-cog">&nbsp;</i>User Details</h6>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    @await Html.PartialAsync("/Views/Shared/_UserDetails.cshtml", user)
+                                                </div>
+                                                <div class="modal-footer bg-modal-footer">
+                                                    <button type="button" class="btn-default btn-sm  button-cancel" data-dismiss="modal">CANCEL</button>
+                                                    <button id="@updateBtnID" type="submit" class="btn  button-next btn-sm float-right">UPDATE</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+
+                                <form id="@frmDeActivateUsrID" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#divPartialUsersTable" asp-action="DeactivateUser" asp-controller="Admin" role="form" data-ajax-method="post">
+                                    @Html.HiddenFor(x => Model.Users[dlgIndex - 1].UserID)
+                                    <div class="modal fade" id="@modalDeleteID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header text-color">
+                                                    <h6 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-ban">&nbsp;</i>Confirm deactivation of @{@user.FullName}</h6>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to deactivate this user ?
+                                                </div>
+                                                <div class="modal-footer bg-modal-footer">
+                                                    <button type="button" class="btn-default btn-sm  button-cancel" data-dismiss="modal">CANCEL</button>
+                                                    <button id="@delBtnID" type="submit" class="btn button-next  btn-sm btnSubmit float-right">DEACTIVATE</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <form id="@frmActivateID" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#divPartialUsersTable" asp-action="ActivateUser" asp-controller="Admin" role="form" data-ajax-method="post">
+                                    @Html.HiddenFor(x => user.UserID)
+                                    @Html.HiddenFor(x => Model.Users[dlgIndex - 1].UserID)
+                                    <div class="modal fade" id="@modalActivateID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header text-color">
+                                                    <h6 class="modal-title case-style" id="exampleModalLongTitle">Confirm activation of @{@user.FullName}</h6>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to activate this user ?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn-default btn-sm  button-cancel" data-dismiss="modal">CANCEL</button>
+                                                    <button id="@actBtnID" type="submit" class="btn button-next  btn-sm btnSubmit float-right">Activate</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @if (Model.UpdateSuccessful.HasValue)
+        {
+            @if (Model.UpdateSuccessful.Value)
+            {
+                <div>
+                    @await Html.PartialAsync("/Views/Shared/_ShowToast.cshtml", new ToastMessage("Success", "user list updated"))
+                </div>
+            }
+            else
+            {
+                <div>
+                    @await Html.PartialAsync("/Views/Shared/_ShowToast.cshtml", new ToastMessage("Error", "Oops something went wrong.", true))
+                </div>
+            }
+        }
+
+    </div>

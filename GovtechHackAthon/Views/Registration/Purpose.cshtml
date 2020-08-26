@@ -1,0 +1,106 @@
+﻿@model RegistrationPurpose;
+@{
+    ViewData["Title"] = "Purpose";
+}
+
+
+@using (Html.BeginForm("PurposeSubmitted", "Registration", FormMethod.Post))
+{
+    @Html.HiddenFor(x=>x.Motivation)
+    @Html.HiddenFor(x=>x.CoreValues)
+    <br />
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card shadow">
+                <div class="card-body">
+                    <img src="~/images/sidelogo.png" class="img-fluid" /><br />
+                    <text class="font-weight-bold" style="color:orangered">
+                        Describe your Purpose:<br />
+                    </text>
+                    <br />
+                    <p>
+                        What motivates you and your team?
+                        What are your and your teams core values?
+                       
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="card shadow">
+                <div class="card-header-case shadow-sm cardbanner50px" style="background-color:mintcream">
+                    <i class="fa fa-info-circle fa-lg purpose-style"></i>
+                    <text class="purpose-style">
+                        Purpose
+                    </text>
+
+                </div>
+                <div class="card-body">
+                    <div class="accordion" id="PurposeCollapse">
+
+                        <div class="card">
+                            <div class="card-header-case" id="collapse1">
+                                <a href="#divMotivation" class="purpose-style" data-toggle="collapse" data-target="#divMotivation" aria-expanded="true" aria-controls="divMotivation" style="text-decoration:none">
+                                    What motivates you?
+                                </a>
+                                <button class="collapsible active pull-right" type="button" data-toggle="collapse" data-target="#divMotivation" aria-expanded="true" aria-controls="divMotivation" />
+                            </div>
+                            <div class="@(Model.NeedsMotivation ? "collapse show" : "collapse")" id="divMotivation" aria-labelledby="collapse1" data-parent="#PurposeCollapse">
+                                    @Html.ValidationMessageFor(x => x.Motivation, "", new { @Class = "text-danger" })
+                                    <div id="txtEditorMotivation"></div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header-case" id="collapse2">
+                                <a href="#divCoreValues" class="purpose-style" data-toggle="collapse" data-target="#divCoreValues" aria-expanded="true" aria-controls="divCoreValues" style="text-decoration:none">
+                                    What are your core values?
+                                </a>
+                                <button class="collapsible pull-right" type="button" data-toggle="collapse" data-target="#divCoreValues" aria-expanded="true" aria-controls="divCoreValues" />
+                            </div>
+                            <div class="@(Model.NeedsCoreValues ? "collapse show" : "collapse")" id="divCoreValues" aria-labelledby="collapse2" data-parent="#PurposeCollapse">
+                                    @Html.ValidationMessageFor(x => x.CoreValues, "", new { @Class = "text-danger" })
+                                    @*@Html.TextAreaFor(x => x.CoreValues, new { @Class = "text-area" })*@
+                                    <div id="txtEditorCoreValues"> </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer cardbanner60px">
+                    <div class="float-right">
+                        <label>Step 05 Of 06 </label>
+                        <input id="btnUpdatePurpose" type="submit" value="Next" class="btn  button-next" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+}
+<script type="text/javascript">
+    $("#txtEditorMotivation").Editor();
+    var editorTxt1 = "@System.Web.HttpUtility.JavaScriptStringEncode(Model.Motivation)";
+    editorTxt1 = editorTxt1.replace(new RegExp("&quot;", "g"), "\"");
+    editorTxt1 = editorTxt1.replace(new RegExp("&fontquot;", "g"), "&quot;");
+    $("#txtEditorMotivation").Editor("setText", editorTxt1);
+
+    $("#txtEditorCoreValues").Editor();
+    editorTxt1 = "@System.Web.HttpUtility.JavaScriptStringEncode(Model.CoreValues)";
+    editorTxt1 = editorTxt1.replace(new RegExp("&quot;", "g"), "\"");
+    editorTxt1 = editorTxt1.replace(new RegExp("&fontquot;", "g"), "&quot;");
+    $("#txtEditorCoreValues").Editor("setText", editorTxt1);
+
+    $(document).on('click', '#btnUpdatePurpose', function (e) {
+        var txtData = String($("#txtEditorMotivation").Editor("getText"));
+        document.getElementById('Motivation').value = txtData.replace(new RegExp("&quot;", "g"), "&fontquot;");
+
+        var txtData = String($("#txtEditorCoreValues").Editor("getText"));
+        document.getElementById('CoreValues').value = txtData.replace(new RegExp("&quot;", "g"), "&fontquot;");;
+    });
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

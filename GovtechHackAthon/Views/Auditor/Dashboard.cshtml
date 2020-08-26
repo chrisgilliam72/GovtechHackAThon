@@ -1,0 +1,188 @@
+﻿@model AuditorProposalList
+@inject GovtechHackAthon.Services.DBLookupService dbLookupService
+<br />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3">
+            <div class="card shadow">
+                <div class="card-body">
+                    <div>
+                        <img src="~/images/sidelogo.png" class="img-fluid" /><br />
+                        <text style="color:orangered">
+                            <b> Auditor Dashboard!</b>
+                        </text>
+                    </div>
+                </div>
+                <p>
+
+                </p>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="card shadow">
+                <div class="card-header shadow-sm" style="background-color:mintcream">
+                    <div>
+                        <i class="fas fa-file-alt fa-lg caselist-style"></i>
+                        <text class="caselist-style">
+                            Auditor Dashboard
+                        </text>
+                    </div>
+
+                </div>
+                <div class="card-body">
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <i class="fas fa-file-alt fa-lg caselist-style"></i>
+                                <text class="caselist-style">
+                                    Proposals
+                                </text>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <table class="table table-bordered table-responsive table-striped">
+                                    <thead style="background-color:azure">
+                                        <tr>
+                                            <th>Proposal Name</th>
+                                            <th>Proposal Date Submitted </th>
+                                            <th>Group </th>
+                                            <th>#Adjudicators in Group</th>
+                                            <th>#Adjudicators scored</th>
+                                            @{
+
+                                                var scoringCategories = dbLookupService.GetScoringCategories();
+                                                foreach (var category in scoringCategories)
+                                                {
+                                                    <th>@(category.Description)</th>
+
+                                                }
+                                            }
+                                            <th>Total</th>
+                                            <th>Rank</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-bordered">
+                                        @{int rank = 1; }
+                                        @foreach (var item in Model.RankedProposals)
+                                        {
+                                            <tr>
+                                                <td class="text-capitalize">@Html.ActionLink(item.ProposalName, "CaseDetail", "Adjudicator", new { CaseID = item.ProposalID })</td>
+                                                <td>@Html.DisplayFor(m => item.DateSubmittedString)</td>
+                                                <td>@Html.DisplayFor(m => item.GroupName)</td>
+                                                <td>@Html.DisplayFor(m => item.GroupAdjudicatorCount)</td>
+                                                <td>@Html.DisplayFor(m => item.AdjudicatorScoredCount)</td>
+                                                @foreach (var category in scoringCategories)
+                                                {
+                                                    int total = item.GetScoreTotal(category.PkId);
+                                                    if (total > 0)
+                                                    {
+                                                        <td>@total</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>N/A</td>
+                                                    }
+
+
+                                                }
+                                                <td>@item.ScoringTotals.Sum(x => x.ScoreValue)</td>
+                                                <td>@rank</td>
+                                                @{rank++;}
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <i class="fas fa-pencil-alt fa-lg caselist-style"></i>
+                                <text class="caselist-style">
+                                    Notes
+                                </text>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    @await Html.PartialAsync("/Views/Auditor/_Notes.cshtml", Model.NotesList)
+                                </div>
+                            </div>
+                            <div class="Row">
+                                <div class="input-group-sm float-right mr-2">
+                                    <button type="button" class="btn button-next btn-sm btnSubmit" data-toggle="modal" data-target="#addNoteModal"><i class="fa fa-plus fa-lg">&nbsp;</i> Add Note</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="card-footer">
+                    <div class="Row">
+                        <div class="float-left" ml-2>
+                            <form id="changePasswordForm" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#divChangePasswordPartial" asp-action="ChangePasswordPartial" asp-controller="Adjudicator" role="form" data-ajax-method="post">
+                                <div id="divChangePasswordPartial">
+                                    @await Html.PartialAsync("/Views/Shared/_ChangePassword.cshtml", new ChangePassword())
+                                </div>
+                            </form>
+                        </div>
+                        <div class="input-group-sm float-right mr-2">
+                            <button id="btnChangePasswordDlg" type="button" class="btn btn btn-danger" data-toggle="modal" data-target="#chngePasswordModal">Change Password &nbsp;<i class="fas fa-lock"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form id="frmAddAction" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#divAuditorNotesTable" asp-action="AddNotePartial" asp-controller="Auditor" role="form" data-ajax-method="post">
+        <div class="row">
+            <div class="col">
+                <div>
+                    <div class="modal fade" id="addNoteModal">
+                        <div class="modal-dialog modal-dialog-centered" role="dialog">
+                            <div class="modal-content">
+                                <div class="modal-header text-color">
+                                    <div class="modal-title" id="addUserModalLabel"><i class="fas fa-pencil-alt">&nbsp;</i>Add Note</div>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                   @await Html.PartialAsync("/views/auditor/_NoteDetails.cshtml", new AuditorNoteItem() {AuditorID=Model.AuditorID })
+                                </div>
+                                <div class="modal-footer bg-modal-footer">
+                                    <button id="btnAddAction" type="submit" class="btn  button-next btn-sm float-right">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+    <script type="text/javascript">
+        $(document).on('click', '#btnChangePassword', function (e) {
+            var form = $("#changePasswordForm");
+            if (form.valid()) {
+                //$('#chngePasswordModal').modal('hide');
+                //$('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+            }
+            //else {
+            //    alert("not valid");
+            //}
+        });
+    </script>
+}

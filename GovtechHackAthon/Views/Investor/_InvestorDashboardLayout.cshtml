@@ -1,0 +1,18 @@
+﻿@{
+    Layout = "_Layout";
+}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div class="sidenav">
+        <a href="@Url.Action("MyProposals","Investor")"><i class="fa fa-thumbs-up fa-lg text-danger"></i>&nbsp;&nbsp;&nbsp;Interested Proposals</a><div class="hr-lines"></div>
+        <a href="@Url.Action("AllProposals","Investor")"><i class="fa fa-lightbulb fa-lg text-danger"></i>&nbsp;&nbsp;&nbsp;&nbsp;All Proposals</a><div class="hr-lines"></div>
+        <a href="@Url.Action("InvestorProfile","Investor")"><i class="fas fa-user fa-lg text-danger"></i>&nbsp;&nbsp;&nbsp;Profile</a><div class="hr-lines"></div>
+    </div>
+    <div class="content">
+        @RenderBody()
+    </div>
+</body>
+@RenderSection("Scripts", required: false)

@@ -1,0 +1,196 @@
+﻿
+@model GovtechHackAthon.Models.Case
+@inject GovtechHackAthon.Services.DBLookupService DBLookupService
+@{
+    ViewData["Title"] = "CaseInfo";
+}
+
+<div id="divCaseInfoDetails">
+
+    @Html.HiddenFor(x => x.CaseID)
+ 
+        <div class="row">
+            <div class="col-12">
+                <div class="input-group-sm">
+                    @Html.LabelFor(x => x.CaseName, "Name", new { @Class = "control-label" })
+                    <input asp-for="CaseName" class="form-control" />
+                    @Html.ValidationMessageFor(x => x.CaseName, "", new { @Class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @{
+                //Dictionary<String, bool> outComeSelections = new Dictionary<String, bool>();
+
+                var situationOptions = DBLookupService.GetSituationOptions().OrderBy(x => x.DisplayOrder).ToList();
+                var situationStatements = DBLookupService.GetSituationStatements().OrderBy(x => x.DisplayOrder).ToList();
+                var outcomes = DBLookupService.GetOutcomes();
+
+                Model.OutComeSelections.Clear();
+
+                foreach (var outcome in outcomes)
+                    Model.OutComeSelections.Add(outcome.PkId, false);
+
+                foreach (var outcomeID in Model.OutComeIDS)
+                    Model.OutComeSelections[outcomeID] = true;
+
+
+                <div class="card-body">
+                    
+                        <div class="accordion" id="CaseInfoCollapse">
+                            <div class="card">
+                                <div class="card-header-case" id="collapse1">
+                                    <a href="#divQuestion1" class="case-style" data-toggle="collapse" data-target="#divQuestion1" aria-expanded="true" aria-controls="divQuestion1" style="text-decoration:none">
+                                        Which of these statements describe your situation the best?
+                                    </a>
+                                    <button class="collapsible pull-right" type="button" data-toggle="collapse" data-target="#divQuestion1" aria-expanded="false" aria-controls="divQuestion1" />
+                                </div>
+                                <div class="@(Model.NeedsSituationStatement ? "collapse show" : "collapse")" id="divQuestion1" aria-labelledby="collapse1" data-parent="#CaseInfoCollapse">
+                                    <div class="card card-body">
+                                        <div>
+
+                                            @{
+                                                foreach (var situation in situationStatements)
+                                                {
+                                                    <div class="checkbox">
+                                                        @Html.RadioButtonFor(Model => Model.SituationStatementID, situation.PkId, new { ID = situation.VisualId })
+                                                        @situation.DisplayString
+                                                    </div>
+                                                }
+                                            }
+
+                                            @Html.ValidationMessageFor(Model => Model.SituationStatementID, "", new { @Class = "text-danger" })
+
+                                        </div>
+                                        <div id="divStudentInfo" class="@(Model.HasStudentInfo ? "d-block" : "d-none")">
+                                            <div class="input-group-sm">
+                                                @Html.LabelFor(m => m.StudentInfo.Course, new { @Class = "control-label" })
+                                                @Html.TextBoxFor(m => m.StudentInfo.Course, new { @Class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.StudentInfo.Course, "", new { @Class = "text-danger" })
+                                            </div>
+                                            <div class="input-group-sm">
+                                                @Html.LabelFor(m => m.StudentInfo.Institution, new { @Class = "control-label" })
+                                                @Html.TextBoxFor(m => m.StudentInfo.Institution, new { @Class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.StudentInfo.Institution, "", new { @Class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div id="divCompanyInfo" class="@(Model.HasCompany ? "d-block" : "d-none")">
+                                            <div class="input-group-sm">
+                                                @Html.LabelFor(m => m.Company.Name, new { @Class = "control-label" })
+                                                @Html.TextBoxFor(m => m.Company.Name, new { @Class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.Company.Name, "", new { @Class = "text-danger" })
+                                            </div>
+                                            <div class="input-group-sm">
+                                                @Html.LabelFor(m => m.Company.City, new { @Class = "control-label" })
+                                                @Html.TextBoxFor(m => m.Company.City, new { @Class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.Company.City, "", new { @Class = "text-danger" })
+                                            </div>
+                                            <div class="input-group-sm">
+                                                @Html.LabelFor(m => m.Company.ProvinceID, "Province", new { @Class = "control-label" })
+                                                @Html.DropDownListFor(m => m.Company.ProvinceID,
+                                                    new SelectList(DBLookupService.GetProvinces(), "PkId", "Name"),
+                                                    "Select Province",
+                                                    new { @Class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.Company.ProvinceID, "", new { @Class = "text-danger" })
+                                            </div>
+                                            <br />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header-case" style="color:#7685B3" id="collapse2">
+                                    <a href="#divQuestion2" class="case-style" data-toggle="collapse" data-target="#divQuestion2" aria-expanded="true" aria-controls="divQuestion2" style="text-decoration:none">
+                                        Which of these options describe your situation the best?
+                                        </a>
+                                        <button class="collapsible pull-right" type="button" data-toggle="collapse" data-target="#divQuestion2" aria-expanded="false" aria-controls="divQuestion2" />
+                                </div>
+                                <div class="@(Model.NeedsSituationOption ? "collapse show" : "collapse")" id="divQuestion2" aria-labelledby="collapse2" data-parent="#CaseInfoCollapse">
+                                    <div class="card card-body">
+
+                                        @{
+                                            foreach (var situation in situationOptions)
+                                            {
+                                                <div class="checkbox">
+                                                    @Html.RadioButtonFor(Model => Model.SituationOptionID, situation.PkId, new { ID = situation.VisualId })
+                                                    @situation.DisplayString
+                                                </div>
+                                            }
+                                        }
+
+                                        @Html.ValidationMessageFor(Model => Model.SituationOptionID, "", new { @Class = "text-danger" })
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header-case" style="color:#7685B3" id="collapse3">
+                                    <a href="#divQuestion3" class="case-style" data-toggle="collapse" data-target="#divQuestion3" aria-expanded="true" aria-controls="divQuestion3" style="text-decoration:none">
+                                        Choose outcomes from the below sections to align to your Proposal/Problem Statement?
+                                        </a>
+                                        <button class="collapsible pull-right" type="button" data-toggle="collapse" data-target="#divQuestion3" aria-expanded="false" aria-controls="divQuestion3" />
+                                </div>
+                                <div class="collapse" id="divQuestion3" aria-labelledby="collapse3" data-parent="#CaseInfoCollapse">
+                                    <div class="card card-body">
+                                        <table id="divCompanyInfo">
+                                            @{
+
+                                                var countOutcomes = Model.OutComeSelections.Count;
+                                                for (int i = 0; i < countOutcomes; i++)
+                                                {
+                                                    var outComeElement = Model.OutComeSelections.ElementAt(i);
+                                                    var elementDiscription = outcomes.FirstOrDefault(x => x.PkId == outComeElement.Key).Description;
+                                                    var elementName = @"OutComeSelections[" + outComeElement.Key + "]";
+                                                    <tr>
+                                                        <td>
+                                                            <div class="checkbox">
+                                                                @Html.CheckBoxFor(m => m.OutComeSelections[outComeElement.Key])
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            @Html.Label(elementDiscription)
+                                                            <input type="hidden" name=@elementName value="@outComeElement.Value" />
+                                                        </td>
+
+                                                    </tr>
+                                                }
+
+                                            }
+                                            <tr>
+                                                <td>
+                                                </td>
+                                                <td>
+                                                    <div class="error" style="display:none">
+                                                        <span class="text-danger">
+                                                            Please select at least one outcome
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                   
+                </div>
+
+            }
+      
+    </div>
+    @if (Model.ShowToast)
+    {
+        @await Html.PartialAsync("/Views/Shared/_ShowToast.cshtml", new ToastMessage("Success", "Case Information updated"))
+    }
+</div>
+
+
+
+
+
+
+
+
+

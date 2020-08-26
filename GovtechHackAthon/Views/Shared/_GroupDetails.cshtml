@@ -1,0 +1,30 @@
+﻿@model GroupItem
+@Html.HiddenFor(x=>x.GroupID)
+<div class="row">
+    <div class="col">
+        <div class="form-group row">
+            <div class="col-3 mt-2">
+                @Html.LabelFor(x => x.Name, "Group Name", new { @Class = "form-label" })
+            </div>
+            <div class="col-9">
+                @Html.TextBoxFor(x => x.Name, new { @Class = "form-control" })
+            </div>
+        </div>
+    </div>
+    </div>
+
+<div class="row">
+    @Html.ValidationMessageFor(x => x.Name, "", new { @Class = "text-danger" })
+</div>
+<div class="row">
+    <div class="col">
+        <div class="form-group float-right">
+            <div class="form-check form-check-inline">
+                @Html.LabelFor(x => x.IsActive, "Active", new { @class = "form-check-input mt-2" })
+                @Html.CheckBoxFor(x => x.IsActive, new { @Class = "form-check-label" })
+            </div>
+        </div>
+    </div>
+</div>
+
+

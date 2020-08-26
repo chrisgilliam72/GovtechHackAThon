@@ -1,0 +1,62 @@
+﻿@model AdminApproveReject
+@using (Html.BeginForm("SubmitCaseResult", "Admin", FormMethod.Post))
+{
+
+    @Html.HiddenFor(m => m.CaseID)
+    <div class="card shadow text-white mb-3">
+        <div class="card-header-case case-details-style" style="background-color:aliceblue">
+            <i class="fas fa-signature fa-lg case-details-style">
+                Application outcome
+            </i>
+            <hr />
+        </div>
+        <div class="card-body">
+            <div class="card-title" style="color:#7685B3">
+
+                <div class="row">
+                    <div class="col">
+                        <i class="fas fa-comment-dots case-details-style"> Comments</i>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        @if (Model.ApprovalState == AdminApprovalState.Unevaluated)
+                        {
+                            @Html.TextAreaFor(m => m.Comment, new { style = "width:100%;height:150px" })
+                            @Html.ValidationMessageFor(m => m.Comment, "", new { @Class = "text-danger" })
+                        }
+                        else
+                        {
+                            @Html.TextAreaFor(m => m.Comment, new { style = "width:100%;height:150px;", ReadOnly = "readonly" })
+                        }
+                    </div>
+                </div>
+                @if (Model.ApprovalState == AdminApprovalState.Unevaluated)
+                {
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-check">
+                                @Html.CheckBoxFor(m => m.EmailApplicant, new { @Class = "form-check-input" })
+                                <label class="form-check-label mt-1" for="exampleCheck1">Notify Applicant</label>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <hr />
+            @if (Model.ApprovalState == AdminApprovalState.Unevaluated)
+            {
+                <button type="submit" name="submitCase" value="Approved" class="btn button-next btn-secondary btn-sm  float-sm-left"><i class="fas fa-thumbs-up text-success"></i>&nbsp;    Approve</button>
+                <button type="submit" name="submitCase" value="Rejected" class="btn button-next btn-secondary btn-sm  float-sm-right"><i class="fas fa-thumbs-down text-danger"></i>&nbsp;    Reject</button>
+            }
+            @if (Model.ApprovalState == AdminApprovalState.Approved)
+            {
+                <button type="submit" name="submitCase" value="Approved" class="btn button-next btn-secondary btn-sm  float-sm-left" disabled><i class="fas fa-thumbs-up text-success"></i>&nbsp;    Approved</button>
+            }
+            @if (Model.ApprovalState == AdminApprovalState.Rejected)
+            {
+                <button type="submit" name="submitCase" value="Rejected" class="btn button-next btn-secondary btn-sm  float-sm-right" disabled><i class="fas fa-thumbs-down text-danger"></i>&nbsp;    Rejected</button>
+            }
+        </div>
+    </div>
+}

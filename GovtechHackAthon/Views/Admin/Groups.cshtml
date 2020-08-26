@@ -1,0 +1,177 @@
+﻿@{
+    Layout = "_AdminDashboardLayout";
+    ViewData["Title"] = "Groups";
+}
+
+@model Groups
+@inject GovtechHackAthon.Services.DBAPI dbAPI
+<br />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col ">
+            <div class="card ">
+                <div class="card-header-case shadow-sm" style="background-color:mintcream">
+                    <i class="fa fa-user-friends fa-lg caselist-style"></i>
+                    <text class="caselist-style">
+                        Groups
+                    </text>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Active</th>
+                                    <th>Name</th>
+                                    <th>Users</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    var usersels = @dbAPI.GetUnnassignedUsers().Select(x => new UserSelectionItem { DisplayName = x.FullName, UserID = x.UserID }).ToList();
+                                    for (int i = 0; i < Model.GroupsList.Count; i++)
+                                    {
+                                        var modalDeleteID = "modalDelete" + i;
+                                        var modalUpdateID = "modalUpdate" + i;
+                                        var modalAddID = "modalAdd" + i;
+                                        var buttonID = "btnUpdate" + i;
+                                        <tr>
+                                            <td>@Html.CheckBoxFor(m => Model.GroupsList[i].IsActive, new { disabled = "true" })</td>
+                                            <td>@Html.DisplayTextFor(m => Model.GroupsList[i].Name)</td>
+                                            <td>@Html.DisplayTextFor(m => Model.GroupsList[i].UserNamesList)</td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button class="btn dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fas fa-bars"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#@modalUpdateID"><i class="fa fa-edit"></i> Edit</button>
+                                                        <button class="dropdown-item btnSubmit" type="button" disabled><i class="fa fa-trash-alt"></i> Delete</button>
+                                                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#@modalAddID"><i class="fa fa-user-plus" aria-hidden="true"></i> Add users</button>
+                                                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#@modalDeleteID"><i class="fa fa-user-minus"></i> Remove users</button>
+                                                    </div>
+                                                </div>
+
+                                                @using (Html.BeginForm("UpdateGroup", "Admin", FormMethod.Post))
+                                                {
+                                                    <div class="modal fade" id="@modalUpdateID">
+
+                                                        <div class="modal-dialog modal-dialog-centered" role="dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header text-color">
+                                                                    <h6 class="modal-title" id="exampleModalLabel"><i class="fa fa-cog">&nbsp;</i>Group Details</h6>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body ">
+                                                                    @await Html.PartialAsync("/Views/Shared/_GroupDetails.cshtml", Model.GroupsList[i])
+                                                                </div>
+                                                                <div class="modal-footer bg-modal-footer">
+                                                                    <button type="button" class="btn-default btn-sm  button-cancel" data-dismiss="modal">CANCEL</button>
+                                                                    <button id="@buttonID" type="submit" class="btn  button-next btn-sm float-right">UPDATE</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                                @using (Html.BeginForm("AddGroup", "Admin", FormMethod.Post))
+                                                {
+                                                    <div class="modal fade" id="modalAddGroup">
+
+                                                        <div class="modal-dialog modal-dialog-centered" role="dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h6 class="modal-title text-color" id="exampleModalLabel"><i class="fa fa-cog">&nbsp;</i>Group Details</h6>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    @await Html.PartialAsync("/Views/Shared/_GroupDetails.cshtml", new GroupItem())
+                                                                </div>
+                                                                <div class="modal-footer bg-modal-footer">
+                                                                    <button type="button" class="btn-default btn-sm  button-cancel" data-dismiss="modal">CANCEL</button>
+                                                                    <button id="@buttonID" type="submit" class="btn  button-next btn-sm float-right">ADD</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                                @using (Html.BeginForm("AddUsersToGroup", "Admin", FormMethod.Post))
+                                                {
+                                                    var userSelModel = new UserListSelection();
+                                                    userSelModel.GroupID = Model.GroupsList[i].GroupID;
+
+                                                    userSelModel.DisplayTitle = "Choose users for this Group";
+                                                    userSelModel.ListUsers.AddRange(usersels);
+                                                    <div class="modal fade" id="@modalAddID">
+                                                        <div class="modal-dialog modal-dialog-centered" role="dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header text-color">
+                                                                    <h6 class="modal-title" id="addUserModalLabel"><i class="fa fa-user-plus">&nbsp;</i>Add Users</h6>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body ">
+                                                                    @await Html.PartialAsync("/Views/Shared/_UserSelection.cshtml", userSelModel)
+                                                                </div>
+                                                                <div class="modal-footer ">
+                                                                    <button type="button" class="btn-default btn-sm  button-cancel" data-dismiss="modal">CANCEL</button>
+                                                                    <button id="btnAddUser" type="submit" class="btn  button-next btn-sm float-right">ADD</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                }
+
+                                                @using (Html.BeginForm("RemoveUsersGroup", "Admin", FormMethod.Post))
+                                                {
+                                                    var userSelModel = new UserListSelection();
+                                                    userSelModel.GroupID = Model.GroupsList[i].GroupID;
+                                                    var groupUsers = Model.GroupsList[i].UserSelectionList;
+                                                    userSelModel.DisplayTitle = "Remove users from team";
+                                                    userSelModel.ListUsers.AddRange(groupUsers);
+                                                    <div class="modal fade" id="@modalDeleteID">
+                                                        <div class="modal-dialog modal-dialog-centered" role="dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header text-color">
+                                                                    <h6 class="modal-title" id="addUserModalLabel"><i class="fas fa-user-minus">&nbsp;</i>Remove Users</h6>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body ">
+                                                                    @await Html.PartialAsync("/Views/Shared/_UserSelection.cshtml", userSelModel)
+                                                                </div>
+                                                                <div class="modal-footer bg-modal-footer">
+                                                                    <button type="button" class="btn-default btn-sm  button-cancel" data-dismiss="modal">CANCEL</button>
+                                                                    <button id="btnAddUser" type="submit" class="btn  button-next btn-sm float-right">REMOVE</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+                <div class="card-footer">
+
+                    <button type="submit" id="AddGroup" name="btnAddGroup" class="btn  button-next btn-sm btnSubmit float-right" data-toggle="modal" data-target="#modalAddGroup"><i class="fa fa-plus fa-lg">&nbsp;</i> New Group</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>

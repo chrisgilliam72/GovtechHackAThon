@@ -1,0 +1,208 @@
+﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+<!DOCTYPE html>
+<html>
+@using Microsoft.AspNetCore.Http;
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> signInManager
+@inject UserManager<IdentityUser> userManager
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - GovtechHackAthon</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link href="~/js/editor.css" type="text/css" rel="stylesheet" />
+    <script src="~/js/editor.js"></script>
+    @Html.Raw(JavaScriptSnippet.FullScript)
+</head>
+<body class="background">
+    <header>
+        <div class="container-fluid">
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-white fixed-top shadow mb-3">
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">
+                  <img src="~/images/sita.png" class="img-fluid" width="35" height="35" />
+                  <strong><text style="color:#009B78"><span style="font-size: medium; font-weight:bolder">G</span><span style="font-weight:bolder">OV</span></text><text style="color:#0F4F84; font-weight:bolder"><span style="font-size: medium; font-weight:bolder">T</span><span style="font-weight:bolder">ECH</span> </text>&lt;<text style="font-size:medium">/</text>HACKATHON&gt;</strong>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse flex-sm-row-reverse d-sm-inline-flex">
+                    <ul class="navbar-nav navbar-right">
+                        @{
+                            if (!signInManager.IsSignedIn(User))
+                            {
+                                <!--                                <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="Registration" asp-action="UserRegistrationData">
+                    REGISTER
+                    <i class="fa fa-edit fa-lg">
+                    </i>
+                </a>
+            </li>
+            -->
+                        <li><text class="navbar-text text-black-50" style="font-size:14px">Already registered?</text>&nbsp;&nbsp;</li>
+                                <li class="nav-item">
+                                    <a class="nav-link shadow-sm bg-light" asp-area="" asp-controller="Registration" asp-action="Login">
+                                        LOGIN
+                                        <i class="fa fa-user fa-lg">
+                                        </i>
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                if (User.IsInRole("Admin") || User.IsInRole("Auditor"))
+                                {
+                                    <li>
+                                        <a class="nav-link" asp-area="" asp-controller="Admin" asp-action="Dashboard">
+
+
+                                            <i class="fa fa-info-circle fa-lg">
+                                            </i>
+                                            DASHBOARD
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="nav-link" asp-area="" asp-controller="Registration" asp-action="Logout">
+
+                                            LOGOUT &nbsp;
+                                            <i class="fa fa-sign-out-alt fa-lg">
+                                            </i>
+                                        </a>
+                                    </li>
+
+                                }
+                                else if (User.IsInRole("Adjudicator") )
+                                {
+
+                                    <li>
+                                        <a class="nav-link" asp-area="" asp-controller="Adjudicator" asp-action="Dashboard">
+                                            <i class="fa fa-info-circle fa-lg"></i>
+                                            DASHBOARD
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="nav-link" asp-area="" asp-controller="Registration" asp-action="Logout">
+                                            <i class="fa fa-sign-out-alt fa-lg">
+                                            </i>
+                                            &nbsp;LOGOUT
+                                        </a>
+                                    </li>
+                                }
+                                else if (User.IsInRole("Investor"))
+                                {
+                                    <li>
+                                        <a class="nav-link" asp-area="" asp-controller="Investor" asp-action="MyProposals">
+                                            <i class="fa fa-info-circle fa-lg"></i>
+                                            DASHBOARD
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="nav-link" asp-area="" asp-controller="Registration" asp-action="Logout">
+                                            <i class="fa fa-sign-out-alt fa-lg">
+                                            </i>
+                                            LOGOUT
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+
+
+                                    <li class="nav-item">
+                                        <div class="dropdown">
+                                            <div class=" d-none d-lg-block d-none d-md-block">
+                                                <button class="btn dropdown-toggle nav-link" asp-area="" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-placement="bottom" title="Proposals" style="font-size:12px">
+                                                    <i class="fas fa-bars fa-lg">
+
+                                                    </i>
+
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <a class="dropdown-item nav-link" asp-area="" asp-controller="CaseList" asp-action="CaseList">
+                                                        <i class="fa fa-info-circle">
+                                                            MY PROPOSALS
+                                                        </i>
+                                                    </a>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mobileShow">
+                                            <button class="btn dropdown-toggle nav-link" asp-area="" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-placement="bottom" title="Proposals" style="font-size:12px">
+                                                <i class="fas fa-bars fa-lg">
+                                                </i>
+                                                MENU
+                                            </button>
+
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item nav-link" asp-area="" asp-controller="CaseList" asp-action="CaseList">
+                                                    <i class="fa fa-info-circle">
+                                                        MY PROPOSALS
+                                                    </i>
+                                                </a>
+
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="nav-item d-none d-lg-block d-none d-md-block">
+                                        <a class="nav-link" asp-area="" asp-controller="Applicant" asp-action="ProfileView" data-toggle="tooltip" data-placement="bottom" title="Profile">
+                                            <i class="fa fa-user fa-lg">
+                                            </i>
+
+                                        </a>
+                                    </li>
+                                    <li class="nav-item mobileShow">
+                                        <a class="nav-link" asp-area="" asp-controller="Applicant" asp-action="ProfileView" data-toggle="tooltip" data-placement="bottom" title="Profile">
+                                            <i class="fa fa-user fa-lg">
+                                            </i>
+                                            PROFILE
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="nav-link" asp-area="" asp-controller="Registration" asp-action="Logout">
+                                            <i class="fa fa-sign-out-alt fa-lg">
+                                            </i>
+                                            LOGOUT
+                                        </a>
+                                    </li>
+                                }
+
+                            }
+                        }
+
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <partial name="_CookieConsentPartial" />
+
+    <div class="container-fluid">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer2 bg-footer">
+        <div class="col-md-12 text-center">
+
+            &copy; 2020 - Govtech Hackathon - 
+            <a href="~/docs/NDP2030 Hackathon Terms and Conditions.pdf" target="_blank" class="text-white">Terms</a> |
+            <a asp-area="" asp-controller="Contact" asp-action="Index" class="text-white">Contact</a> 
+
+        </div>
+    </footer>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

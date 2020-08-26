@@ -1,0 +1,19 @@
+﻿@model AdjudicatorDeferralReasonData
+@Html.HiddenFor(x=>x.CaseID)
+<div id="divDeferReasonPartial" class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                @Html.LabelFor(x => x.Reason)
+                @Html.TextAreaFor(x => x.Reason, new { @Class = "form-control shadow-sm", @style = "height:100px" })
+                @Html.ValidationMessageFor(x => x.ResubmissionDate, "", new { @Class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.ResubmissionDate, "Resubmission Date")
+                @Html.EditorFor(x=>x. ResubmissionDate, null, new { type = "date", @Class = "form-control" })
+                @Html.ValidationMessageFor(x => x.ResubmissionDate, "", new { @Class = "text-danger" })
+            </div>
+        </div>
+    </div>
+</div>

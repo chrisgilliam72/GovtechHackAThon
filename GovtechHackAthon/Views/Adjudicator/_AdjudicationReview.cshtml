@@ -1,0 +1,121 @@
+﻿@inject GovtechHackAthon.Services.DBLookupService dbLookupService
+@model CaseRatingInfo
+@Html.HiddenFor(x=>x.CaseID)
+@Html.HiddenFor(x=>x.UserID)
+@{
+
+
+    var scoringCategories = dbLookupService.GetScoringCategories();
+    int criteriaCount = Model.RatingCriteria.Count;
+    if (criteriaCount == 0)
+    {
+        foreach (var category in scoringCategories)
+        {
+            Model.RatingCriteria.Add(new CaseRatingCriteriaItem { CategoryID = category.PkId });
+            criteriaCount++;
+        }
+
+    }
+
+}
+    <div id="divRatingsPartial">
+        <div class="form-group row">
+            <div class="col-1">
+                @Html.LabelFor(m => m.CategoryID, "Category", new { @Class = "form-label mt-1" })
+            </div>
+            <div class="col-2">
+                @Html.DropDownListFor(m => m.CategoryID,
+                 new SelectList(dbLookupService.GetCategories(), "PkId", "Name"),
+                 "Select Category",
+                 new { @Class = "form-control" })
+            </div>
+            @Html.ValidationMessageFor(m => m.CategoryID, "", new { @Class = "text-danger" })
+        </div>
+        <div class="row">
+            <div class="col">
+                <h5 class="shadow-sm">
+                    @Html.LabelFor(m => Model.Round, new { @class = "control-label" }) @Html.DisplayTextFor(m => Model.Round)
+                </h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <table class="table table-bordered table-responsive-lg">
+                    <thead class="bg-light">
+                        <tr>
+                            @for (int i = 0; i < criteriaCount; i++)
+                            {
+                                var category = scoringCategories.FirstOrDefault(x => x.PkId == Model.RatingCriteria[i].CategoryID);
+                                if (category != null)
+                                {
+                                    <th>@(category.Description+ " ("+category.MaxScore+")")</th>
+                                    Model.RatingCriteria[i].MaxScore = category.MaxScore;
+                                }
+                                else
+                                {
+                                    <th></th>
+                                }
+
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            @for (int i = 0; i < criteriaCount; i++)
+                            {
+                                <td>
+                                    @if (Model.IsSubmitted || Model.ViewOnly)
+                                    {
+                                        @Html.TextBoxFor(m => Model.RatingCriteria[i].ActualScore, new { disabled = "disabled" })
+                                    }
+                                    else
+                                    {
+                                        @Html.TextBoxFor(m => Model.RatingCriteria[i].ActualScore, new { @class = "form-control shadow-sm" })
+                                    }
+                                    @Html.HiddenFor(m => Model.RatingCriteria[i].CategoryID)
+                                    @Html.HiddenFor(m => Model.RatingCriteria[i].MaxScore)
+                                    <br />
+                                    @Html.ValidationMessageFor(m => Model.RatingCriteria[i].ActualScore, "", new { @Class = "text-danger" })
+                                </td>
+
+                            }
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <h5 class=" text-left shadow-sm">
+                        &nbsp;<i class="fas fa-comment-dots"></i>
+                        @Html.LabelFor(m => Model.Comment, new { @class = "control-label" })
+                    </h5>
+                    @if (Model.IsSubmitted || Model.ViewOnly)
+                    {
+                        @Html.TextAreaFor(m => m.Comment, new { @class = "form-control", @style = "height:100px", disabled = "dsabled" })
+                    }
+                    else
+                    {
+                        @Html.TextAreaFor(m => m.Comment, new { @class = "form-control shadow-sm", @style = "height:100px" })
+                    }
+                </div>
+            </div>
+        </div>
+        @if (Model.ShowToast)
+        {
+            @await Html.PartialAsync("/Views/Shared/_ShowToast.cshtml", new ToastMessage("Success", "Rating updated"))
+        }
+
+        @if (!Model.IsSubmitted && !Model.ViewOnly)
+        {
+            <div class="row">
+                <div class="col text-right">
+                    <button id="btnSaveRating" type="submit" name="UpdateRating" class="btn  button-next btn-sm mr-1" value="Save">Save</button>
+                    <button id="btnSubmitRating" type="submit" name="UpdateRating" class="btn  button-next btn-sm " value="Submit">Submit</button>
+                </div>
+            </div>
+        }
+    </div>
+

@@ -1,0 +1,112 @@
+﻿
+@{
+    Layout = "_AdminDashboardLayout";
+    ViewData["Title"] = "Dashboard";
+}
+
+@model AdminDashboard
+<br />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="card shadow animate__animated animate__pulse" style="border-radius:10px">
+                <div class="card-body">
+
+                    <div class="text-center">
+                        <i class="fa fa-users fa-2x text-warning text-center"></i>
+                        <p>Applicants </p> <hr />
+                    </div>
+                    <div class="text-center">
+                        <h5 class="font-weight-bolder">@Model.TotalApplicants</h5>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card shadow animate__animated animate__pulse" style="border-radius:10px">
+                <div class="card-body">
+                    <div class="text-center">
+                        <i class="fa fa-file-alt fa-2x text-danger text-center"></i>
+
+                        <p>Applications</p><hr />
+                    </div>
+                    <div class="text-center">
+                        <h5 class="font-weight-bolder">@Model.TotalApplications</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card shadow animate__animated animate__pulse" style="border-radius:10px">
+                <div class="card-body">
+                    <div class="text-center">
+                        <i class="fa fa-check-circle fa-2x text-success text-center"></i>
+                        <p>Proposals Reviewed </p> <hr />
+                    </div>
+                    <div class="text-center">
+                        <h5 class="font-weight-bolder">@Model.RevewiedApplications</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow animate__animated animate__pulse" style="border-radius:10px">
+                <div class="card-body">
+                    <div class="text-center">
+                        <i class=""></i>
+                        <i class="fas fa-tasks fa-2x text-info text-center"></i>
+                        <p># Proposals not assigned yet </p> <hr />
+                    </div>
+                    <div class="text-center">
+                        <h5 class="font-weight-bolder">@Model.UnassignedApplications</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow animate__animated animate__pulse" style="border-radius:10px">
+                <div class="card-body">
+                    <div class="text-center">
+                        <i class="fas fa-highlighter fa-2x text-secondary text-center"></i>
+                        <p># Proposals not modified in the past month</p> <hr />
+                    </div>   <div class="text-center">
+                        <h5 class="font-weight-bolder">4</h5>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow animate__animated animate__pulse" style="border-radius:10px">
+                <div class="card-body">
+                    <div class="card-header-case text-danger">
+                        <b>  Application Insight</b>
+                    </div>
+                    <div class="img-fluid">
+                        <img src="~/images/demoInsights.png" style="max-width:100%; height:auto" />
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow animate__animated animate__pulse" style="border-radius:10px">
+                <div class="card-header-case" style="color:black">
+                    Proposals by Region
+                </div>
+                <div class="card-body" style="background-color: #C8C8C8">
+                    <img src="~/images/saPie.jpg" class="img-fluid" style="width:100%; width:auto" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

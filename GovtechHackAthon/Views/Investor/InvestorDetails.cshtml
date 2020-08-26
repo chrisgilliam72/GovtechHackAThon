@@ -1,0 +1,341 @@
+﻿@model InvestorDetails
+@inject GovtechHackAthon.Services.DBLookupService dbLookupSrv
+@if (!Model.IsNew)
+{
+    Layout = "~/Views/Investor/_InvestorDashboardLayout.cshtml";
+}
+<br>
+@using (Html.BeginForm("SaveInvestorDetails", "Investor", FormMethod.Post))
+{
+    @Html.HiddenFor(x => x.IsNew)
+    @Html.HiddenFor(x => x.ID)
+<div class="container-fluid">
+    <div class="row">
+        @if (Model.IsNew)
+        {
+            <div class="col-md-3">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <img src="~/images/sidelogo.png" class="img-fluid" /><br />
+                        <text style="color:orangered">
+                            <b> Investor Registration</b>
+                        </text>
+                    </div>
+
+                </div>
+            </div>
+        }
+        else
+        {
+
+        }
+        @if (Model.IsNew)
+        {
+            <div class="col-md-9">
+                <div class="card shadow">
+                    <div class="card-header-case shadow-sm" style="background-color:mintcream">
+                        <div class="userReg">
+                            @if (Model.IsNew)
+                            {
+                                <i class="fas fa-money-check-alt fa-lg" aria-hidden="true">&nbsp;</i>
+                                <text> Investor Registration</text>
+
+                            }
+
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p class="userReg font-weight-bold">Before you can enjoy using this platform please register.</p>
+                                <br />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group-sm">
+                                    @Html.LabelFor(x => x.Name, "First Name")
+                                    @Html.TextBoxFor(x => x.Name, new { @CLass = "form-control" })
+                                    @Html.ValidationMessageFor(x => x.Name, "", new { @Class = "text-danger" })
+                                </div>
+                                <div class="input-group-sm">
+                                    @Html.LabelFor(x => x.Surname, "Last Name")
+                                    @Html.TextBoxFor(x => x.Surname, new { @CLass = "form-control" })
+                                    @Html.ValidationMessageFor(x => x.Surname, "", new { @Class = "text-danger" })
+                                </div>
+                                <div class="input-group-sm">
+                                    @Html.LabelFor(x => x.Email, "Email Address")
+                                    @Html.TextBoxFor(x => x.Email, new { @CLass = "form-control" })
+                                    @Html.ValidationMessageFor(x => x.Email, "", new { @Class = "text-danger" })
+                                </div>
+
+                                <div class="input-group-sm">
+                                    @Html.LabelFor(x => x.Phone, "Contact Number")
+                                    @Html.TextBoxFor(x => x.Phone, new { @CLass = "form-control" })
+                                    @Html.ValidationMessageFor(x => x.Phone, "", new { @Class = "text-danger" })
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group-sm">
+                                    @Html.LabelFor(x => x.Company)
+                                    @Html.TextBoxFor(x => x.Company, new { @CLass = "form-control" })
+                                    @Html.ValidationMessageFor(x => x.Company, "", new { @Class = "text-danger" })
+                                </div>
+                                <div class="input-group-sm">
+                                    @Html.LabelFor(x => x.IndustryID, "Industry")
+                                    @Html.DropDownListFor(x => x.IndustryID,
+                                     new SelectList(dbLookupSrv.GetInvestorIndustries(), "PkId", "Description"),
+                                     "Select Industry",
+                                     new { @Class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.IndustryID, "", new { @Class = "text-danger" })
+                                </div>
+                                <div class="input-group-sm">
+                                    @Html.LabelFor(x => x.ProvinceID, "Province")
+                                    @Html.DropDownListFor(x => x.ProvinceID,
+                                     new SelectList(dbLookupSrv.GetProvinces(), "PkId", "Name"),
+                                     "Select Province",
+                                     new { @Class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.ProvinceID, "", new { @Class = "text-danger" })
+                                </div>
+                                <div class="input-group-sm">
+                                    @Html.LabelFor(x => x.City)
+                                    @Html.TextBoxFor(x => x.City, new { @CLass = "form-control" })
+                                    @Html.ValidationMessageFor(x => x.City, "", new { @Class = "text-danger" })
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+
+                                        @if (Model.IsNew)
+                                        {
+                                            <div class="input-group-sm">
+                                                @Html.LabelFor(x => x.Password, "Password", new { @Class = "control-label" })
+                                                <input asp-for="Password" class="form-control" type="password" />
+                                                @Html.ValidationMessageFor(x => x.Password, "", new { @Class = "text-danger" })
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="col-md-6">
+                                        @if (Model.IsNew)
+                                        {
+                                            <div class="input-group-sm">
+                                                @Html.LabelFor(x => x.ConfirmPassword, "Confirm Password", new { @Class = "control-label" })
+                                                <input asp-for="ConfirmPassword" class="form-control" type="password" />
+                                                @Html.ValidationMessageFor(x => x.ConfirmPassword, "", new { @Class = "text-danger" })
+                                            </div>
+                                        }
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                @foreach (var authError in Model.AuthErrors)
+                                {
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <span class="text-danger">@Html.DisplayFor(x => authError)</span>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            @*<div class="col-10">
+                                    <div id="divChangePasswordPartial">
+                                        @await Html.PartialAsync("/Views/Shared/_ChangePassword.cshtml", new ChangePassword())
+                                    </div>
+                                </div>*@
+                            @if (!Model.IsNew)
+                            {
+                                <div class="col">
+
+                                    <button id="btnChangePasswordDlg" type="button" class="btn btn btn-danger float-left" data-toggle="modal" data-target="#chngePasswordModal">Change Password &nbsp;<i class="fas fa-lock"></i></button>
+
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <button class="btn button-next float-right" type="submit" value="Register">Submit</button>
+                    </div>
+                </div>
+            </div>
+
+        }
+        else
+        {
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header-case shadow-sm" style="background-color:mintcream">
+                        <div class="caselist-style">
+
+                            @if (!Model.IsNew)
+                            {
+
+                                <i class="fa fa-user fa-lg" aria-hidden="true"></i>
+                                <text>Update Profile</text>
+
+
+                            }
+                            else
+                            {
+
+                            }
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="input-group-sm">
+                                            @Html.LabelFor(x => x.Name, "First Name")
+                                            @Html.TextBoxFor(x => x.Name, new { @CLass = "form-control" })
+                                            @Html.ValidationMessageFor(x => x.Name, "", new { @Class = "text-danger" })
+                                        </div>
+                                        <div class="input-group-sm">
+                                            @Html.LabelFor(x => x.Surname, "Last Name")
+                                            @Html.TextBoxFor(x => x.Surname, new { @CLass = "form-control" })
+                                            @Html.ValidationMessageFor(x => x.Surname, "", new { @Class = "text-danger" })
+                                        </div>
+                                        <div class="input-group-sm">
+                                            @Html.LabelFor(x => x.Email, "Email Address")
+                                            @Html.TextBoxFor(x => x.Email, new { @CLass = "form-control" })
+                                            @Html.ValidationMessageFor(x => x.Email, "", new { @Class = "text-danger" })
+                                        </div>
+
+                                        <div class="input-group-sm">
+                                            @Html.LabelFor(x => x.Phone, "Contact Number")
+                                            @Html.TextBoxFor(x => x.Phone, new { @CLass = "form-control" })
+                                            @Html.ValidationMessageFor(x => x.Phone, "", new { @Class = "text-danger" })
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="input-group-sm">
+                                            @Html.LabelFor(x => x.Company)
+                                            @Html.TextBoxFor(x => x.Company, new { @CLass = "form-control" })
+                                            @Html.ValidationMessageFor(x => x.Company, "", new { @Class = "text-danger" })
+                                        </div>
+                                        <div class="input-group-sm">
+                                            @Html.LabelFor(x => x.IndustryID, "Industry")
+                                            @Html.DropDownListFor(x => x.IndustryID,
+                                             new SelectList(dbLookupSrv.GetInvestorIndustries(), "PkId", "Description"),
+                                             "Select Industry",
+                                             new { @Class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.IndustryID, "", new { @Class = "text-danger" })
+                                        </div>
+                                        <div class="input-group-sm">
+                                            @Html.LabelFor(x => x.ProvinceID, "Province")
+                                            @Html.DropDownListFor(x => x.ProvinceID,
+                                             new SelectList(dbLookupSrv.GetProvinces(), "PkId", "Name"),
+                                             "Select Province",
+                                             new { @Class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.ProvinceID, "", new { @Class = "text-danger" })
+                                        </div>
+                                        <div class="input-group-sm">
+                                            @Html.LabelFor(x => x.City)
+                                            @Html.TextBoxFor(x => x.City, new { @CLass = "form-control" })
+                                            @Html.ValidationMessageFor(x => x.City, "", new { @Class = "text-danger" })
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+
+                                                @if (Model.IsNew)
+                                                {
+                                                    <div class="input-group-sm">
+                                                        @Html.LabelFor(x => x.Password, "Password", new { @Class = "control-label" })
+                                                        <input asp-for="Password" class="form-control" type="password" />
+                                                        @Html.ValidationMessageFor(x => x.Password, "", new { @Class = "text-danger" })
+                                                    </div>
+                                                }
+                                            </div>
+                                            <div class="col-md-6">
+                                                @if (Model.IsNew)
+                                                {
+                                                    <div class="input-group-sm">
+                                                        @Html.LabelFor(x => x.ConfirmPassword, "Confirm Password", new { @Class = "control-label" })
+                                                        <input asp-for="ConfirmPassword" class="form-control" type="password" />
+                                                        @Html.ValidationMessageFor(x => x.ConfirmPassword, "", new { @Class = "text-danger" })
+                                                    </div>
+                                                }
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        @foreach (var authError in Model.AuthErrors)
+                                        {
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <span class="text-danger">@Html.DisplayFor(x => authError)</span>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                    @*<div class="col-10">
+                                            <div id="divChangePasswordPartial">
+                                                @await Html.PartialAsync("/Views/Shared/_ChangePassword.cshtml", new ChangePassword())
+                                            </div>
+                                        </div>*@
+                                    @if (!Model.IsNew)
+                                    {
+                                        <div class="col">
+
+                                            <button id="btnChangePasswordDlg" type="button" class="btn btn btn-danger float-left" data-toggle="modal" data-target="#chngePasswordModal">Change Password &nbsp;<i class="fas fa-lock"></i></button>
+
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn button-next float-right" type="submit" value="Register">Submit</button>
+                    </div>
+
+                </div>
+            </div>
+
+        }
+    </div>
+
+</div>
+    }
+    <div class="row">
+        @if (Model.ShowUpdateSuccessful)
+        {
+            <div class="col-10">
+                @await Html.PartialAsync("/Views/Shared/_ShowToast.cshtml", new ToastMessage("Success", "Profile updated!"))
+            </div>
+        }
+
+        <div class="col-10">
+            <form id="changePasswordForm" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#divChangePasswordPartial" asp-action="ChangePasswordPartial" asp-controller="Registration" role="form" data-ajax-method="post">
+                <div id="divChangePasswordPartial">
+                    @await Html.PartialAsync("/Views/Shared/_ChangePassword.cshtml", new ChangePassword())
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+    <script>
+        $(document).on('click', '#btnChangePassword', function (e) {
+            var form = $("#changePasswordForm");
+            if (form.valid()) {
+                $('.modal-backdrop').remove();
+            }
+        });
+    </script>
+}
+
+

@@ -1,0 +1,64 @@
+﻿@model GovtechHackAthon.Models.UserDetails
+@inject GovtechHackAthon.Services.DBLookupService DBLookupService
+@Html.HiddenFor(x=>x.UserID)
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label asp-for="FirstName" class="control-label"></label>
+            <input asp-for="FirstName" class="form-control" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Email" class="control-label"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="City" class="control-label"></label>
+            <input asp-for="City" class="form-control" />
+            <span asp-validation-for="City" class="text-danger"></span>
+        </div>
+        <div class="input-group-sm">
+            @Html.LabelFor(m => m.fkUserLevelID, "User Level")
+            @Html.DropDownListFor(m => m.fkUserLevelID,
+             new SelectList(DBLookupService.GetUserLevels(), "PkId", "Name"),
+             "User level",
+             new { @Class = "form-control" })
+            @Html.ValidationMessageFor(m => m.fkUserLevelID, "", new { @Class = "text-danger" })
+        </div>
+
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label asp-for="Surname" class="control-label"></label>
+            <input asp-for="Surname" class="form-control" />
+            <span asp-validation-for="Surname" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ContactNo" class="control-label"></label>
+            <input asp-for="ContactNo" class="form-control" />
+            <span asp-validation-for="ContactNo" class="text-danger"></span>
+        </div>
+        <div class="input-group-sm">
+            @Html.LabelFor(m => m.fkProvinceID, "Province")
+            @Html.DropDownListFor(m => m.fkProvinceID,
+             new SelectList(DBLookupService.GetProvinces(), "PkId", "Name"),
+             "Select Province",
+             new { @Class = "form-control" })
+            @Html.ValidationMessageFor(m => m.fkProvinceID, "", new { @Class = "text-danger" })
+        </div>
+        <br /><br />
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.CanAssignCases)
+            @Html.LabelFor(m => m.CanAssignCases, "Can Assign Cases", new { @Class = "form-check-label" })
+            <br />
+            @Html.CheckBoxFor(m => m.CanEditCases)
+            @Html.LabelFor(m => m.CanEditCases, "Can Edit Cases", new { @Class = "form-check-label" })
+        </div>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,49 @@
+﻿
+@model GovtechHackAthon.Models.ApplicantData
+@{
+    ViewData["Title"] = "ProfileView";
+}
+
+<br />
+<div class="row">
+    <div class="col">
+        @using (Html.BeginForm("SaveProfileData", "Applicant", FormMethod.Post, new { enctype = "multipart/form-data", ID = "ProfileDataForm" }))
+        {
+            @await Html.PartialAsync("/Views/Shared/_ProfileDetails.cshtml", Model)
+        }
+    </div>
+</div>
+<br/>
+<div class="row">
+    <div class="col-10">
+        <form id="changePasswordForm" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#divChangePasswordPartial" asp-action="ChangePasswordPartial" asp-controller="Registration" role="form" data-ajax-method="post">
+            <div id="divChangePasswordPartial">
+                @await Html.PartialAsync("/Views/Shared/_ChangePassword.cshtml", new ChangePassword())
+            </div>
+        </form>
+    </div>
+    <div class="col-md-12">
+        <div class="text-right">
+            <button id="btnChangePasswordDlg" type="button" class="btn btn btn-danger" data-toggle="modal" data-target="#chngePasswordModal">Change Password &nbsp;<i class="fas fa-lock"></i></button>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).on('click', '#btnChangePassword', function (e) {
+            var form = $("#changePasswordForm");
+            if (form.valid()) {
+                $('.modal-backdrop').remove();
+            }
+        });
+        // Add the following code if you want the name of the file appear on select
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+    </script>
+
+}

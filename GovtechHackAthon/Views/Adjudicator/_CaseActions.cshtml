@@ -1,0 +1,37 @@
+﻿@model CaseActionsList
+
+<div id="divPartialActionTable">
+    @await Html.PartialAsync("/Views/Adjudicator/_ActionsTable.cshtml", Model)
+</div>
+
+<br />
+@if (!Model.ViewOnly)
+{
+    <form id="frmAddAction" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#divPartialActionTable" asp-action="AddActionPartial" asp-controller="Adjudicator" role="form" data-ajax-method="post">
+        <div class="row">
+            <div class="col">
+                <div>
+                    <button type="button" class="btn  btn-secondary btn-sm btnSubmit" data-toggle="modal" data-target="#addActionModal"><i class="fa fa-plus fa-plus">&nbsp;</i>Add Action</button>
+                    <div class="modal fade" id="addActionModal">
+                        <div class="modal-dialog modal-dialog-centered" role="dialog">
+                            <div class="modal-content">
+                                <div class="modal-header text-color">
+                                    <div class="modal-title" id="addUserModalLabel"><i class="fas fa-phone">&nbsp;</i>Add Action</div>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    @await Html.PartialAsync("/Views/Adjudicator/_ActionDetails.cshtml", new CaseActionData() { CaseID = Model.CaseID, AdjudicatorID = Model.AdjudicatorID })
+                                </div>
+                                <div class="modal-footer bg-modal-footer">
+                                    <button id="btnAddAction" type="submit" class="btn  button-next btn-sm float-right">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+}
